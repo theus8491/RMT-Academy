@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#d8213a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<title>IdleDex Academy | Aprenda, evolua e negocie</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.js"></script>
+<script>
+tailwind.config = { theme: { extend: { colors: {
+  academy: '#ef476f', 'academy-dark': '#d92f58', ink: '#252c48', quiet: '#68718b',
+  honey: '#fff0c2', sunshine: '#ffd447', accentBlue: '#38a7dc', leaf: '#168b68', line: '#f0dcae'
+ }, fontFamily: { display: ['VT323', 'monospace'], pixel: ['Press Start 2P', 'monospace'] } } } };
+</script>
+<style type="text/tailwindcss">
+@layer base {
+  html { @apply scroll-smooth; }
+  body { @apply m-0 min-h-screen font-display text-[#17231d]; background: radial-gradient(circle at center, #1e2638 0%, #0a0e17 100%); }
+  p { @apply leading-6; }
+}
+@layer components {
+  .pokedex-device { @apply mx-auto my-5 max-w-[1400px] border-[8px] border-[#ffd35a] bg-[#d8213a] p-2 sm:my-8 sm:border-[12px] sm:p-3; box-shadow: 0 0 0 5px #d8213a, 0 0 0 9px #721326, 0 15px 30px rgba(0,0,0,0.6), 0 0 40px rgba(255, 211, 90, 0.15); }
+  .device-chrome { @apply flex h-12 items-center justify-between border-b-4 border-[#ffd35a] bg-[#e9344b] px-2 font-display text-lg font-bold tracking-wide text-[#fff0c2] sm:h-16 sm:px-5 sm:text-2xl; }
+  .device-indicators { @apply flex items-center gap-2; }
+  .device-led { @apply h-2.5 w-2.5 border-2 border-[#48101a]; }
+  .device-led-main { @apply h-8 w-8 border-4 border-[#f7efe0] bg-[#39c9e6] shadow-[0_0_0_3px_#85152a]; }
+  .device-led-red { @apply bg-[#ffb454]; }
+  .device-led-green { @apply bg-[#85d87c]; }
+  .site-header { @apply relative z-20 border-b-4 border-[#ffd35a] bg-[#d8213a] px-2 py-3 shadow-[inset_0_3px_0_#ff7580]; }
+  .site-container { @apply mx-auto w-full max-w-6xl px-2 sm:px-4; }
+  .site-nav { @apply flex min-h-[62px] flex-wrap items-center justify-between gap-3; }
+  .brand-mark { @apply flex items-center gap-3 no-underline; }
+  .brand-icon { @apply grid h-12 w-12 place-items-center border-4 border-[#64101f] bg-[#f1e7bf] text-2xl text-[#d8213a] shadow-[4px_4px_0_#791427]; }
+  .brand-name { @apply block font-display text-3xl font-bold leading-7 tracking-tight text-[#fff0c2] sm:text-4xl; }
+  .brand-caption { @apply mt-1 block font-pixel text-[8px] tracking-[.15em] text-[#fff0c2] sm:text-[9px]; }
+  .nav-menu { @apply flex w-full flex-wrap items-center justify-end gap-1 md:w-auto; }
+  .nav-link { @apply border-2 border-[#8a1528] bg-[#bd1c33] px-2.5 py-2 font-display text-xl font-bold leading-5 text-[#fff0c2] no-underline shadow-[2px_2px_0_#731123] transition hover:bg-[#98182c] sm:px-3 sm:py-2.5 sm:text-2xl; }
+  .header-login { @apply ml-1 inline-flex cursor-pointer items-center gap-2 border-2 border-[#50101b] bg-[#f5e9c4] px-3 py-2 font-display text-xl font-bold text-[#9d1830] shadow-[3px_3px_0_#701326] hover:bg-white; }
+  main { @apply overflow-hidden border-x-4 border-b-4 border-[#50101b] bg-[#dce8c6] shadow-[inset_0_0_0_4px_#aab995]; }
+  .hero { @apply relative isolate overflow-hidden border-b-4 border-[#ffd35a] bg-[#233a32] px-5 py-16 text-center sm:py-20; }
+  .hero-bg { @apply absolute inset-0 -z-20 h-full w-full object-cover; image-rendering:pixelated; filter:contrast(1.08) brightness(.72) saturate(.9); }
+  .hero::before { content:""; @apply absolute inset-0 -z-10 bg-[#0b1715]/45; }
+  .hero::after { content:""; @apply pointer-events-none absolute inset-0 -z-10 opacity-20; background:repeating-linear-gradient(to bottom,transparent 0,transparent 3px,#000 4px); }
+  .tag { @apply inline-flex border-2 border-[#f5d26f] bg-[#243c32] px-3 py-2 font-display text-xl font-bold leading-5 tracking-wider text-[#ffdf77] shadow-[3px_3px_0_#101a18]; }
+  .hero-title { @apply mx-auto my-6 max-w-4xl bg-transparent px-2 py-2 font-pixel text-lg leading-[1.9] tracking-normal text-[#f3edcf] sm:text-2xl md:text-3xl; }
+  .hero-title span { @apply !text-[#ff6471]; }
+  .hero-copy { @apply mx-auto mb-7 max-w-2xl bg-transparent px-2 py-1 text-xl leading-6 text-[#e1ebcc] sm:text-2xl; }
+  .section-space { @apply border-b-2 border-[#bd5967] px-4 py-10 sm:px-8 sm:py-14; }
+  .section-title { @apply mb-7 text-center; }
+  .section-title h2 { @apply my-3 font-pixel text-[12px] leading-[1.9] text-[#293a31] sm:text-sm; }
+  .section-title p { @apply mx-auto my-3 max-w-2xl text-xl leading-6 text-[#4d5d4c] sm:text-2xl; }
+  .course-grid { @apply grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4; }
+  .two-column-grid { @apply grid grid-cols-1 gap-4 md:grid-cols-2; }
+  .card { @apply border-4 border-[#304438] bg-[#edf2d8] p-5 shadow-[4px_4px_0_#83917b] transition duration-150 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#83917b] sm:p-6; }
+  .card h3 { @apply my-2 text-2xl font-bold leading-6 text-[#26392f] sm:text-3xl; }
+  .card p { @apply text-xl leading-5 text-[#536251] sm:text-2xl; }
+  .card ul { @apply list-none p-0 text-xl leading-6 text-[#334638]; }
+  .card li::before { content:"▪ "; @apply font-black text-[#c6233c]; }
+  .price { @apply my-3 text-4xl font-bold text-[#b31c34] sm:text-5xl; }
+  .featured { @apply border-4 border-[#bb1f38] bg-[#f8edcc] shadow-[4px_4px_0_#9a182c]; }
+  .popular { @apply inline-flex border-2 border-[#69202a] bg-[#d52a42] px-2 py-2 font-pixel text-[7px] text-[#fff0c2]; }
+  .btn { @apply inline-flex w-full items-center justify-center border-4 border-[#671324] bg-[#d8213a] px-4 py-3 text-center font-display text-2xl font-bold leading-6 text-white no-underline shadow-[4px_4px_0_#81152a] transition hover:bg-[#b91c34] active:translate-x-1 active:translate-y-1 active:shadow-none; }
+  .btn-outline { @apply border-4 border-[#394d3d] bg-[#d3dfb9] text-[#24392d] shadow-[4px_4px_0_#83917b] hover:bg-[#c2d2a4]; }
+  .btn-auto { @apply w-auto min-w-[220px]; }
+  .course-icon { @apply mb-3 text-3xl; }
+  .note { @apply mt-5 text-center text-lg text-[#5b6958]; }
+  .highlight { @apply border-4 border-[#506448] bg-[#e8efcf] p-5 shadow-[5px_5px_0_#9ca989] sm:p-8; }
+  .steps { @apply grid grid-cols-1 gap-4 md:grid-cols-3; }
+  .step-number { @apply inline-grid h-9 w-9 place-items-center border-4 border-[#6c5424] bg-[#f4d674] font-pixel text-xs text-[#493a1b]; }
+  .faq details { @apply border-b-2 border-dashed border-[#93a285] py-4; }
+  .faq summary { @apply cursor-pointer text-xl font-bold text-[#27392d] hover:text-[#b31c34] sm:text-2xl; }
+  .faq details p { @apply text-xl text-[#536251] sm:text-2xl; }
+  .site-footer { @apply border-t-4 border-[#731123] bg-[#25372f] px-5 py-7 text-center text-lg text-[#dce8c6]; }
+  .site-footer strong { @apply font-display text-2xl font-bold leading-6 text-[#ffdc77]; }
+  .device-bottom { @apply flex items-center justify-between border-t-4 border-[#ffd35a] bg-[#d8213a] px-2 py-3 font-display text-lg font-bold tracking-wide text-[#fff0c2] sm:px-5 sm:text-xl; }
+  .device-speaker { @apply flex gap-1.5; }
+  .device-speaker i { @apply h-2 w-5 border-2 border-[#741124] bg-[#a8172d]; }
+  .auth-overlay { @apply fixed inset-0 z-[1000] hidden items-center justify-center overflow-y-auto bg-[#101721]/85 p-4 backdrop-blur-sm; }
+  .auth-overlay.open { @apply flex; }
+  .auth-card { @apply relative grid w-full max-w-4xl grid-cols-1 overflow-hidden border-4 border-[#56101d] bg-[#e5edcf] shadow-[8px_8px_0_#0009] md:grid-cols-[.82fr_1.18fr]; }
+  .auth-art { @apply flex min-h-[150px] flex-col justify-between border-b-4 border-[#681324] bg-[#d8213a] p-5 text-[#fff0c2] md:min-h-[560px] md:border-b-0 md:border-r-4 md:p-8; }
+  .auth-art-mark { @apply font-pixel text-[8px] leading-5; }
+  .auth-art-emoji { @apply hidden text-center text-7xl md:block; }
+  .auth-art h2 { @apply my-3 font-pixel text-xs leading-[2] md:text-sm; }
+  .auth-art p { @apply m-0 text-xl leading-5 text-[#fff0c2]; }
+  .auth-main { @apply max-h-[92vh] overflow-y-auto p-5 sm:p-7; }
+  .auth-top { @apply flex items-start justify-between gap-3; }
+  .auth-top h2 { @apply m-0 font-pixel text-xs leading-6 text-[#293a31]; }
+  .auth-subtitle { @apply mt-2 text-xl text-[#536251]; }
+  .auth-close { @apply grid h-9 w-9 shrink-0 cursor-pointer place-items-center border-2 border-[#304438] bg-[#d3dfb9] font-pixel text-sm text-[#24392d] hover:bg-[#c2d2a4]; }
+  .auth-tabs { @apply my-5 grid grid-cols-2 gap-1 border-2 border-[#304438] bg-[#cbd8b4] p-1; }
+  .auth-tab { @apply cursor-pointer border-2 border-transparent bg-transparent p-2 font-pixel text-[7px] text-[#536251]; }
+  .auth-tab.active { @apply border-[#671324] bg-[#d8213a] text-white shadow-[2px_2px_0_#81152a]; }
+  .auth-panel { @apply hidden; }
+  .auth-panel.active { @apply block; }
+  .auth-field { @apply my-3; }
+  .auth-field label { @apply mb-1.5 block text-xl font-bold text-[#26392f]; }
+  .auth-field input { @apply w-full border-2 border-[#687b61] bg-[#f7f8e9] px-3 py-2 font-display text-2xl text-[#1c2c23] outline-none focus:border-[#bd1c35] focus:ring-2 focus:ring-[#d8213a]/30; }
+  .auth-password { @apply relative flex; }
+  .auth-password input { @apply pr-20; }
+  .auth-show { @apply absolute right-1 top-1/2 -translate-y-1/2 cursor-pointer border-2 border-[#304438] bg-[#d3dfb9] px-2 py-1 text-sm text-[#24392d]; }
+  .auth-options { @apply my-3 flex items-center justify-between gap-3 text-lg; }
+  .auth-check { @apply flex items-start gap-2 text-lg leading-5 text-[#536251]; }
+  .auth-check input { @apply mt-1 accent-[#c6223a]; }
+  .auth-switch { @apply cursor-pointer border-0 bg-transparent p-0 font-bold text-[#b51d35]; }
+  .auth-submit { @apply mt-3; }
+  .auth-feedback { @apply my-2 min-h-5 text-lg font-bold text-[#bd3152]; }
+}
+</style>
+</head>
+
+<body>
+<div class="pokedex-device">
+  <div class="device-chrome" aria-hidden="true">
+    <div class="device-indicators"><span class="device-led device-led-main"></span><span class="device-led device-led-red"></span><span class="device-led device-led-green"></span></div>
+    <span>IDLEDEX · TRAINER CONSOLE</span>
+    <span class="hidden sm:inline">SYSTEM READY</span>
+  </div>
+
+<header class="site-header">
+  <nav class="site-container site-nav">
+    <a class="brand-mark" href="#inicio" aria-label="IdleDex Academy - início"><span class="brand-icon">⚡</span><span><span class="brand-name">IdleDex</span><span class="brand-caption">ACADEMY</span></span></a>
+    <div class="nav-menu">
+      <a class="nav-link" href="#cursos">Aprender</a>
+      <a class="nav-link" href="#rmt">Mentoria RMT</a>
+      <a class="nav-link" href="#pvp">PvP</a>
+      <a class="nav-link" href="#guia">Guia</a>
+      
+      <!-- BOTÃO ENTRAR -->
+      <button class="header-login" type="button" onclick="verificarLogin()">👤 Entrar</button>
+      
+      <!-- BOTÃO SAIR -->
+      <button class="header-login bg-red-700 text-white hover:bg-red-800 hidden" type="button" id="btnSair" onclick="fazerLogout()">Sair</button>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+<div class="hero" id="inicio">
+  <img class="hero-bg" src="idle-dex-ash-pikachu-red.png" alt="" aria-hidden="true">
+  <span class="tag">APRENDA COM A IDLEDEX ACADEMY</span>
+  <h1 class="hero-title">Evolua no IdleDex com estratégia.<br><span>Aprenda. Planeje. Conquiste seus objetivos.</span></h1>
+  <p class="hero-copy">Explore estratégias de farm e negociação no RMT, avalie Pokémon para revenda e desenvolva equipes de PvP com orientação prática e personalizada. O conteúdo ajuda você a tomar decisões mais conscientes dentro do jogo — sem promessa de resultados financeiros.</p>
+  <a href="#rmt" class="btn btn-auto">Ver opções de mentoria</a>
+</div>
+
+<section class="section-space" id="cursos">
+  <div class="site-container">
+    <div class="section-title">
+      <span class="tag">O QUE VOCÊ VAI APRENDER</span>
+      <h2>Estratégias para cada etapa da sua jornada</h2>
+      <p>Aprenda no seu ritmo: do início da sua jornada até decisões mais avançadas de farm, negociação e PvP.</p>
+    </div>
+    <div class="two-column-grid">
+      <div class="card"><div class="course-icon">💎</div><h3>Farm de itens lucrativos</h3><p>Aprenda quais itens valem a pena farmar, como avaliar a procura no mercado e quais atividades priorizar para aproveitar melhor seu tempo.</p></div>
+      <div class="card"><div class="course-icon">🎯</div><h3>Captura de Pokémon para revenda</h3><p>Descubra quais Pokémon capturar, como analisar IVs, Nature, raridade, utilidade e potencial de venda.</p></div>
+      <div class="card"><div class="course-icon">💰</div><h3>Seus primeiros R$ 100 no RMT</h3><p>Estratégias para buscar suas primeiras vendas, organizar recursos, definir preços e negociar com compradores.</p></div>
+      <div class="card"><div class="course-icon">🚀</div><h3>Vendas online profissionais</h3><p>Aprenda a criar anúncios, atender clientes, negociar, organizar sua loja e desenvolver uma rotina de vendas mais eficiente.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-space" id="rmt">
+  <div class="site-container">
+    <div class="section-title">
+      <span class="tag">MENTORIA RMT</span>
+      <h2>Construa sua estratégia de vendas no IdleDex</h2>
+      <p>Receba orientação para organizar seu farm, identificar oportunidades de revenda e aprimorar sua abordagem de vendas no RMT.</p>
+    </div>
+    <div class="course-grid">
+      <div class="card">
+        <h3>🌱 1 dia</h3><div class="price">R$ 5</div><p>Acesso por 24 horas</p>
+        <ul><li>Mentoria direta</li><li>Farm de itens</li><li>Captura para revenda</li><li>Estratégias de vendas</li></ul>
+        <button class="btn" onclick="irParaCheckout('Mentoria RMT - 1 dia', 'R$ 5')">Falar sobre este plano</button>
+      </div>
+      <div class="card">
+        <h3>📅 1 semana</h3><div class="price">R$ 15</div><p>Acesso por 7 dias</p>
+        <ul><li>Mentoria direta</li><li>Farm de itens</li><li>Captura para revenda</li><li>Estratégias de vendas</li></ul>
+        <button class="btn" onclick="irParaCheckout('Mentoria RMT - 1 semana', 'R$ 15')">Falar sobre este plano</button>
+      </div>
+      <div class="card">
+        <h3>⭐ 1 mês</h3><div class="price">R$ 50</div><p>Acesso por 30 dias</p>
+        <ul><li>Mentoria direta</li><li>Farm de itens</li><li>Captura para revenda</li><li>Estratégias de vendas</li></ul>
+        <button class="btn" onclick="irParaCheckout('Mentoria RMT - 1 mês', 'R$ 50')">Falar sobre este plano</button>
+      </div>
+      <div class="card featured">
+        <span class="popular">🔥 POPULAR</span>
+        <h3>♾️ Vitalício</h3><div class="price">R$ 150</div><p>Pagamento único</p>
+        <ul><li>Todos os conteúdos RMT</li><li>Mentoria diretamente comigo</li><li>Estratégias de farm e vendas</li><li>Enquanto o jogo estiver online</li></ul>
+        <button class="btn" onclick="irParaCheckout('Mentoria RMT - Vitalício', 'R$ 150')">Falar sobre este plano</button>
+      </div>
+    </div>
+    <p class="note">Todos os planos RMT incluem os cursos de farm, revenda e vendas online. Resultados financeiros dependem da prática e não são garantidos.</p>
+  </div>
+</section>
+
+<section class="section-space" id="guia">
+  <div class="site-container">
+    <div class="highlight">
+      <div class="two-column-grid items-center">
+        <div>
+          <span class="tag">GUIA EXCLUSIVO</span>
+          <h2>📘 Do zero ao mercado RMT</h2>
+          <p>Um passo a passo para começar no IdleDex com mais clareza, aproveitar melhor seus recursos e preparar sua evolução no jogo.</p>
+          <ul class="leading-8">
+            <li>Resgate de bônus iniciais</li><li>Hyper Potions e Revives</li><li>Configuração do Auto</li><li>Economia de Silver</li>
+            <li>Estratégia com Scyther e Scizor</li><li>Progressão pelos ginásios</li><li>Uso inteligente do mercado</li><li>Organização de itens para revenda</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="tag">MATERIAL AVULSO</span>
+          <h3>Guia para Iniciantes</h3>
+          <div class="price">R$ 25</div>
+          <p>Pagamento único. Material de aprendizado para começar uma conta com foco em vendas.</p>
+          <ul><li>Estratégia do zero</li><li>Economia de recursos</li><li>Progressão no jogo</li><li>Preparação para o RMT</li></ul>
+          <button class="btn" onclick="irParaCheckout('Guia para Iniciantes', 'R$ 25')">Quero saber mais sobre o guia</button>
+          <p class="note">Produto separado, sem mentoria individual.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-space" id="pvp">
+  <div class="site-container">
+    <div class="section-title">
+      <span class="tag">MENTORIA PVP</span>
+      <h2>⚔️ PvP no IdleDex: evolua sua estratégia</h2>
+      <p>Aprenda a montar equipes mais equilibradas, entender sinergias e adaptar suas táticas usando os Pokémon que você já tem.</p>
+    </div>
+    <div class="two-column-grid">
+      <div class="card"><div class="course-icon">🌱</div><h3>Nível Iniciante</h3><p>Fundamentos do PvP, tipos, vantagens, fraquezas, primeiros times e escolhas de Pokémon.</p></div>
+      <div class="card"><div class="course-icon">⚡</div><h3>Nível Intermediário</h3><p>Análise de IVs, Nature, golpes, cobertura, funções de equipe e estratégias para enfrentar adversários mais fortes.</p></div>
+      <div class="card"><div class="course-icon">🏆</div><h3>Nível Avançado</h3><p>Construção de equipes competitivas, combinações de golpes, estratégias elaboradas e adaptação contra diferentes estilos de adversários.</p></div>
+      <div class="card"><div class="course-icon">🤝</div><h3>Acompanhamento personalizado</h3><p>Analisaremos os Pokémon que você já tem, identificando oportunidades de melhoria e criando táticas de acordo com seu nível e seus objetivos.</p></div>
+    </div>
+    <div class="section-title mt-12">
+      <h2>Escolha sua mentoria PvP</h2>
+      <p>Orientação direta para jogadores iniciantes, intermediários e avançados.</p>
+    </div>
+    <div class="two-column-grid">
+      <div class="card">
+        <h3>⚔️ Mentoria PvP Mensal</h3><div class="price">R$ 30</div><p>30 dias de acompanhamento</p>
+        <ul><li>Análise dos seus Pokémon</li><li>Montagem de equipes PvP</li><li>Estratégias personalizadas</li><li>Orientação para todos os níveis</li></ul>
+        <button class="btn" onclick="irParaCheckout('Mentoria PvP - Mensal', 'R$ 30')">Falar sobre este plano</button>
+      </div>
+      <div class="card featured">
+        <span class="popular">ACESSO VITALÍCIO</span>
+        <h3>♾️ Mentoria PvP Vitalícia</h3><div class="price">R$ 200</div><p>Pagamento único</p>
+        <ul><li>Todos os níveis de PvP</li><li>Mentoria direta</li><li>Construção de times</li><li>Táticas avançadas</li><li>Enquanto o IdleDex estiver online</li></ul>
+        <button class="btn" onclick="irParaCheckout('Mentoria PvP - Vitalício', 'R$ 200')">Falar sobre este plano</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-space">
+  <div class="site-container">
+    <div class="section-title">
+      <h2>Como funciona o atendimento?</h2>
+      <p>Escolha uma opção e fale comigo pelo WhatsApp para tirar dúvidas e receber as instruções de pagamento.</p>
+    </div>
+    <div class="steps">
+      <div class="card"><span class="step-number">1</span><h3>Escolha seu produto</h3><p>Selecione o guia ou a mentoria que melhor atende ao seu objetivo.</p></div>
+      <div class="card"><span class="step-number">2</span><h3>Chame pelo WhatsApp</h3><p>O WhatsApp abrirá com uma mensagem pronta sobre o produto escolhido. Você pode editar e enviar quando quiser.</p></div>
+      <div class="card"><span class="step-number">3</span><h3>Receba atendimento</h3><p>Tire suas dúvidas e receba os detalhes para concluir a compra com segurança.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-space faq">
+  <div class="site-container">
+    <div class="section-title"><h2>Perguntas frequentes</h2></div>
+    <details><summary>Preciso ter experiência no IdleDex?</summary><p>Não. Existem conteúdos para iniciantes e jogadores mais experientes.</p></details>
+    <details><summary>Todos os planos RMT incluem os cursos?</summary><p>Sim. Todos incluem os conteúdos de farm, captura para revenda e vendas online. O que muda é o período da mentoria.</p></details>
+    <details><summary>O guia de R$ 25 inclui mentoria?</summary><p>Não. O guia é um material avulso. O acompanhamento individual está disponível nos planos de mentoria.</p></details>
+    <details><summary>O plano vitalício dura quanto tempo?</summary><p>A mentoria vitalícia permanece disponível enquanto o IdleDex continuar online, sem prazo fixo de encerramento.</p></details>
+    <details><summary>Vou ganhar R$ 100 com certeza?</summary><p>Não. O objetivo é ensinar estratégias para buscar resultados. Os ganhos dependem da dedicação, do mercado e das oportunidades disponíveis.</p></details>
+    <details><summary>Como faço o pagamento?</summary><p>Após preencher seus dados, você será direcionado ao WhatsApp. O link de pagamento será enviado após o atendimento.</p></details>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <strong>🎮 IdleDex Academy</strong>
+  <p>Mentorias RMT, PvP e guias para jogadores.</p>
+  <p>Serviço independente. Não representa a administração oficial do IdleDex.</p>
+  <p>Verifique as regras do jogo e das plataformas antes de realizar transações de RMT.</p>
+</footer>
+  <div class="device-bottom" aria-hidden="true"><span>POKÉDEX TRAINING SYSTEM</span><span class="device-speaker"><i></i><i></i><i></i><i></i><i></i></span><span>V.01 · IDLEDEX</span></div>
+</div>
+
+<!-- MODAL DE LOGIN/CADASTRO CLIENTE -->
+<div class="auth-overlay" id="authOverlay" role="dialog" aria-modal="true" aria-labelledby="authTitle" onclick="fecharLoginFora(event)">
+  <div class="auth-card">
+    <aside class="auth-art">
+      <div class="auth-art-mark">🎮 IDLEDEX ACADEMY</div>
+      <div class="auth-art-emoji" aria-hidden="true">✨</div>
+      <div><h2>Que bom ter você por aqui!</h2><p>Acesse sua área de jogador e acompanhe sua jornada de aprendizado.</p></div>
+    </aside>
+    <div class="auth-main">
+      <div class="auth-top">
+        <div><h2 id="authTitle">Área do cliente</h2><p class="auth-subtitle" id="authSubtitle">Entre para continuar sua jornada.</p></div>
+        <button class="auth-close" type="button" aria-label="Fechar" onclick="fecharLogin()">×</button>
+      </div>
+      <div class="auth-tabs" role="tablist" aria-label="Acesso à conta">
+        <button class="auth-tab active" id="tabLogin" type="button" role="tab" aria-selected="true" onclick="mostrarAuth('login')">Entrar</button>
+        <button class="auth-tab" id="tabCadastro" type="button" role="tab" aria-selected="false" onclick="mostrarAuth('cadastro')">Criar conta</button>
+      </div>
+      <form class="auth-panel active" id="painelLogin" onsubmit="fazerLogin(event)">
+        <div class="auth-field"><label for="loginNick">Nickname</label><input id="loginNick" type="text" autocomplete="username" placeholder="Seu nome de jogador" required maxlength="40"></div>
+        <div class="auth-field"><label for="loginSenha">Senha de 4 dígitos</label><div class="auth-password"><input id="loginSenha" type="password" autocomplete="current-password" placeholder="••••" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" minlength="4" required><button class="auth-show" type="button" onclick="alternarSenha('loginSenha',this)">Mostrar</button></div></div>
+        <div class="auth-options"><label class="auth-check"><input type="checkbox"> Manter conectado</label><button class="auth-switch" type="button" onclick="mensagemDemo('Recuperação de senha ainda não está disponível.')">Esqueci minha senha</button></div>
+        <button class="btn auth-submit" type="submit">Entrar na minha conta</button>
+        <p class="auth-feedback" aria-live="polite"></p>
+        
+        <!-- BOTÕES DE CADASTRO E ADMIN -->
+        <div class="flex flex-col gap-2 mt-4">
+          <p class="auth-options justify-center">Ainda não tem uma conta? <button class="auth-switch" type="button" onclick="mostrarAuth('cadastro')">Cadastre-se</button></p>
+          
+          <button class="btn btn-outline w-full text-lg" type="button" onclick="abrirAdmin()" style="border-color: #304438; color: #26392f; background-color: #d3dfb9;">
+            🛠️ Acessar Painel Admin
+          </button>
+        </div>
+      </form>
+      <form class="auth-panel" id="painelCadastro" onsubmit="fazerCadastro(event)">
+        <div class="auth-field"><label for="cadJogador">Nickname no IdleDex</label><input id="cadJogador" type="text" autocomplete="username" placeholder="Escolha seu nome de jogador" required maxlength="40"></div>
+        <div class="auth-field"><label for="cadEmail">E-mail <span class="font-normal text-quiet">(opcional)</span></label><input id="cadEmail" type="email" autocomplete="email" placeholder="voce@email.com"></div>
+        <div class="auth-field"><label for="cadWhats">WhatsApp <span class="font-normal text-quiet">(opcional)</span></label><input id="cadWhats" type="tel" autocomplete="tel" inputmode="tel" placeholder="(DDD) 9 0000-0000"></div>
+        <div class="auth-field"><label for="cadSenha">Crie uma senha de 4 dígitos</label><div class="auth-password"><input id="cadSenha" type="password" autocomplete="new-password" placeholder="••••" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" minlength="4" required><button class="auth-show" type="button" onclick="alternarSenha('cadSenha',this)">Mostrar</button></div></div>
+        <div class="auth-field"><label for="cadConfirmaSenha">Confirme os 4 dígitos</label><div class="auth-password"><input id="cadConfirmaSenha" type="password" autocomplete="new-password" placeholder="Digite novamente" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" minlength="4" required><button class="auth-show" type="button" onclick="alternarSenha('cadConfirmaSenha',this)">Mostrar</button></div></div>
+        <label class="auth-check"><input id="aceiteCadastro" type="checkbox" required> Li e aceito os termos e a política de privacidade.</label>
+        <button class="btn auth-submit" type="submit">Criar minha conta</button>
+        <p class="auth-feedback" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE LOGIN ADMIN -->
+<div class="auth-overlay" id="adminOverlay" role="dialog" aria-modal="true" aria-labelledby="adminTitle" onclick="fecharAdminFora(event)">
+  <div class="auth-card" style="max-width: 450px; display: flex; flex-direction: column;">
+    <div class="auth-main p-8">
+      <div class="auth-top mb-4">
+        <h2 class="font-pixel text-sm text-[#293a31]" id="adminTitle">ÁREA ADMINISTRATIVA</h2>
+        <button class="auth-close" type="button" aria-label="Fechar" onclick="fecharAdmin()">×</button>
+      </div>
+      <form id="formAdminLogin" onsubmit="entrarComoAdmin(event)">
+        <div class="auth-field">
+          <label for="adminNick">Nickname do Administrador</label>
+          <input id="adminNick" type="text" placeholder="Ex: MasterAdmin" required maxlength="30">
+        </div>
+        <div class="auth-field">
+          <label for="adminSenha">Senha de Administrador</label>
+          <div class="auth-password">
+            <input id="adminSenha" type="password" placeholder="••••" required maxlength="20">
+            <button class="auth-show" type="button" onclick="alternarSenha('adminSenha',this)">Mostrar</button>
+          </div>
+        </div>
+        <button class="btn auth-submit mt-4" type="submit">Entrar no Painel</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE TROCA DE SENHA (OBRIGATÓRIO) -->
+<div class="auth-overlay" id="modalTrocarSenha" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
+  <div class="auth-card" style="max-width: 450px; display: flex; flex-direction: column; border-color: #d97706; box-shadow: 0 0 30px rgba(217, 119, 6, 0.5);">
+    <div class="auth-main p-8">
+      <div class="auth-top mb-4">
+        <h2 class="font-pixel text-sm text-[#d97706]" id="adminTitle">⚠️ TROCA OBRIGATÓRIA</h2>
+      </div>
+      <p class="text-xl text-[#26392f] mb-4">Você está usando a senha padrão <strong>0000</strong>. Por segurança, você deve criar uma nova senha para continuar.</p>
+      
+      <form onsubmit="salvarNovaSenha(event)">
+        <div class="auth-field">
+          <label for="novaSenhaAdmin">Nova Senha (mínimo 4 dígitos)</label>
+          <div class="auth-password">
+            <input id="novaSenhaAdmin" type="password" placeholder="••••" required minlength="4" maxlength="20">
+            <button class="auth-show" type="button" onclick="alternarSenha('novaSenhaAdmin',this)">Mostrar</button>
+          </div>
+        </div>
+        <div class="auth-field">
+          <label for="confirmaNovaSenhaAdmin">Confirme a Nova Senha</label>
+          <div class="auth-password">
+            <input id="confirmaNovaSenhaAdmin" type="password" placeholder="••••" required minlength="4" maxlength="20">
+            <button class="auth-show" type="button" onclick="alternarSenha('confirmaNovaSenhaAdmin',this)">Mostrar</button>
+          </div>
+        </div>
+        <button class="btn auth-submit mt-4" type="submit" style="background-color: #d97706; border-color: #92400e;">Salvar Nova Senha</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- BOTÃO DE CHAT SUPORTE AO VIVO -->
+<button class="chat-toggle" type="button" onclick="alternarChat()" aria-label="Abrir chat de suporte ao vivo">💬</button>
+
+<!-- PAINEL DO CHAT -->
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-header">
+    <span>💬 Suporte ao vivo</span>
+    <button class="chat-fechar" type="button" onclick="alternarChat()" aria-label="Fechar chat">×</button>
+  </div>
+  <div class="chat-mensagens" id="chatMensagens">
+    <!-- Preenchido via JS -->
+  </div>
+  <div class="chat-form">
+    <div class="chat-campo">
+      <label for="chatNick">Nickname:</label>
+      <input id="chatNick" type="text" placeholder="Seu nick" maxlength="30" required>
+    </div>
+    <div class="chat-campo">
+      <label for="chatTexto">Mensagem:</label>
+      <input id="chatTexto" type="text" placeholder="Digite sua mensagem..." maxlength="200" required>
+    </div>
+    <button class="chat-enviar" type="button" onclick="enviarMensagemChat()">Enviar</button>
+  </div>
+</div>
+
+<script>
+// ==========================================
+// CONEXÃO COM O SUPABASE
+// ==========================================
+const SUPABASE_URL = 'https://tkrbfimaobuxxrvmkexv.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_7iBYHmIK02nPEgdAVSOK6A_c32QH0rK';
+let supabaseClient = null;
+
+if (window.supabase) {
+  supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+} else {
+  console.error("Erro: Biblioteca do Supabase não carregou.");
+}
+
+let CLIENTE_LOGADO = localStorage.getItem('idledex_cliente_nick');
+let planoEscolhidoNoIndex = null;
+let adminTrocandoSenha = null; // Guarda o nick do admin que está trocando a senha
+
+// --- INICIALIZAÇÃO ---
+document.addEventListener('DOMContentLoaded', () => {
+  atualizarBotaoSair();
+  preencherChatNick();
+  carregarChatCliente();
+  setInterval(carregarChatCliente, 3000);
+});
+
+function atualizarBotaoSair() {
+  const btnSair = document.getElementById('btnSair');
+  if (CLIENTE_LOGADO) {
+    btnSair.classList.remove('hidden');
+  } else {
+    btnSair.classList.add('hidden');
+  }
+}
+
+function fazerLogout() {
+  localStorage.removeItem('idledex_cliente_nick');
+  CLIENTE_LOGADO = null;
+  window.location.href = 'index.html';
+}
+
+// --- VERIFICAÇÃO DO BOTÃO ENTRAR ---
+function verificarLogin() {
+  if (CLIENTE_LOGADO) {
+    window.location.href = 'painel.html';
+  } else {
+    abrirLogin();
+  }
+}
+
+// --- AÇÕES DE COMPRA ---
+function irParaCheckout(plano, valor) {
+  planoEscolhidoNoIndex = { plano, valor };
+  if (!CLIENTE_LOGADO) {
+    alert("Você precisa entrar ou criar uma conta para solicitar a mentoria.");
+    abrirLogin();
+  } else {
+    localStorage.setItem('idledex_plano_pendente', JSON.stringify(planoEscolhidoNoIndex));
+    window.location.href = 'painel.html';
+  }
+}
+
+// --- MODAL DE LOGIN/CADASTRO CLIENTE ---
+function abrirLogin() { 
+  document.getElementById('authOverlay').classList.add('open'); 
+  document.body.style.overflow='hidden'; 
+}
+function fecharLogin() { document.getElementById('authOverlay').classList.remove('open'); document.body.style.overflow=''; }
+function fecharLoginFora(event) { if (event.target.id === 'authOverlay') fecharLogin(); }
+function mostrarAuth(tipo) {
+  const cadastro = tipo === 'cadastro';
+  document.getElementById('painelLogin').classList.toggle('active', !cadastro);
+  document.getElementById('painelCadastro').classList.toggle('active', cadastro);
+  document.getElementById('tabLogin').classList.toggle('active', !cadastro);
+  document.getElementById('tabCadastro').classList.toggle('active', cadastro);
+  document.getElementById('authSubtitle').textContent = cadastro ? 'Preencha seus dados para começar.' : 'Entre para continuar sua jornada.';
+}
+function alternarSenha(id, botao) {
+  const campo = document.getElementById(id); const visivel = campo.type === 'password';
+  campo.type = visivel ? 'text' : 'password'; botao.textContent = visivel ? 'Ocultar' : 'Mostrar';
+}
+function mensagemDemo(texto) { document.querySelector('#painelLogin .auth-feedback').textContent = texto; }
+document.addEventListener('keydown', event => { 
+  if (event.key === 'Escape') {
+    fecharLogin();
+    fecharAdmin();
+  }
+});
+
+// --- MODAL DE LOGIN ADMIN ---
+function abrirAdmin() {
+  document.getElementById('adminOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function fecharAdmin() {
+  document.getElementById('adminOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+function fecharAdminFora(event) {
+  if (event.target.id === 'adminOverlay') fecharAdmin();
+}
+
+// ENTRAR COMO ADMIN (E LIDAR COM A SENHA PADRÃO)
+async function entrarComoAdmin(event) {
+  event.preventDefault();
+  if (!supabaseClient) return alert("Erro de conexão. Recarregue a página.");
+
+  const nick = document.getElementById('adminNick').value.trim();
+  const senha = document.getElementById('adminSenha').value;
+
+  // Busca o admin pelo Nick e Senha
+  const { data, error } = await supabaseClient
+    .from('admins')
+    .select('*')
+    .eq('nome', nick)
+    .eq('senha', senha)
+    .single();
+
+  if (error || !data) {
+    return alert("Acesso negado: Nickname ou senha de Administrador incorretos.");
+  }
+
+  // VERIFICA SE A SENHA É A PADRÃO 0000
+  if (senha === '0000') {
+    adminTrocandoSenha = nick; // Salva o nick para atualizar depois
+    
+    // Fecha o modal de login admin
+    fecharAdmin();
+    
+    // Abre o modal de troca de senha obrigatória
+    document.getElementById('modalTrocarSenha').classList.add('open');
+    document.body.style.overflow='hidden';
+    
+    return; 
+  }
+
+  // Se a senha não for 0000, loga normalmente
+  localStorage.setItem('idledex_admin_nick', nick);
+  window.location.href = 'admin.html';
+}
+
+// SALVAR A NOVA SENHA (OBRIGATÓRIO)
+async function salvarNovaSenha(event) {
+  event.preventDefault();
+  if (!supabaseClient || !adminTrocandoSenha) return;
+
+  const novaSenha = document.getElementById('novaSenhaAdmin').value;
+  const confirmaSenha = document.getElementById('confirmaNovaSenhaAdmin').value;
+
+  if (novaSenha.length < 4) {
+    return alert("A nova senha precisa ter no mínimo 4 dígitos.");
+  }
+  if (novaSenha !== confirmaSenha) {
+    return alert("As senhas não coincidem. Digite novamente.");
+  }
+  if (novaSenha === '0000') {
+    return alert("Você não pode usar a senha padrão 0000. Escolha outra.");
+  }
+
+  // Atualiza a senha no banco de dados
+  const { error } = await supabaseClient
+    .from('admins')
+    .update({ senha: novaSenha })
+    .eq('nome', adminTrocandoSenha);
+
+  if (error) {
+    return alert("Erro ao atualizar a senha: " + error.message);
+  }
+
+  alert("Senha alterada com sucesso! Você será redirecionado para o painel.");
+  
+  localStorage.setItem('idledex_admin_nick', adminTrocandoSenha);
+  window.location.href = 'admin.html';
+}
+
+// --- LOGIN E CADASTRO NO SUPABASE (CLIENTES) ---
+async function fazerLogin(event) {
+  event.preventDefault();
+  if (!supabaseClient) return alert("Erro de conexão. Recarregue a página.");
+
+  const nick = document.getElementById('loginNick').value.trim();
+  const senha = document.getElementById('loginSenha').value;
+  const feedback = document.querySelector('#painelLogin .auth-feedback');
+  feedback.textContent = 'Verificando...';
+
+  const { data, error } = await supabaseClient.from('clientes').select('*').eq('nick', nick).eq('senha', senha).single();
+
+  if (error || !data) {
+    feedback.textContent = 'Nickname ou senha incorretos.';
+    return;
+  }
+
+  localStorage.setItem('idledex_cliente_nick', data.nick);
+  CLIENTE_LOGADO = data.nick;
+  fecharLogin();
+  
+  // REDIRECIONA DIRETO PARA O PAINEL
+  window.location.href = 'painel.html';
+}
+
+async function fazerCadastro(event) {
+  event.preventDefault();
+  if (!supabaseClient) return alert("Erro de conexão. Recarregue a página.");
+
+  const nick = document.getElementById('cadJogador').value.trim();
+  const email = document.getElementById('cadEmail').value.trim();
+  const whats = document.getElementById('cadWhats').value.trim();
+  const senha = document.getElementById('cadSenha').value;
+  const confirma = document.getElementById('cadConfirmaSenha').value;
+  const feedback = document.querySelector('#painelCadastro .auth-feedback');
+
+  if (!/^\d{4}$/.test(senha)) { feedback.textContent = 'A senha precisa ter exatamente 4 números.'; return; }
+  if (senha !== confirma) { feedback.textContent = 'Os quatro dígitos não coincidem.'; return; }
+  
+  feedback.textContent = 'Criando conta...';
+
+  const { data: existe } = await supabaseClient.from('clientes').select('nick').eq('nick', nick).single();
+  if (existe) { feedback.textContent = 'Este nickname já está em uso.'; return; }
+
+  const { error } = await supabaseClient.from('clientes').insert([{
+    nick: nick, email: email || 'Não informado', whatsapp: whats || 'Não informado',
+    senha: senha, status: 'pendente', plano: 'Nenhum', data_inicio: new Date().toISOString()
+  }]);
+
+  if (error) { feedback.textContent = 'Erro ao criar conta: ' + error.message; return; }
+
+  localStorage.setItem('idledex_cliente_nick', nick);
+  CLIENTE_LOGADO = nick;
+  fecharLogin();
+  
+  // REDIRECIONA DIRETO PARA O PAINEL
+  window.location.href = 'painel.html';
+}
+
+// --- CHAT SUPORTE ---
+function alternarChat() { document.getElementById('chatPanel').classList.toggle('aberto'); }
+
+function preencherChatNick() {
+  if (CLIENTE_LOGADO) {
+    document.getElementById('chatNick').value = CLIENTE_LOGADO;
+    document.getElementById('chatNick').readOnly = true;
+    document.getElementById('chatNick').classList.add('bg-gray-200');
+  }
+}
+
+async function carregarChatCliente() {
+  if (!CLIENTE_LOGADO || !supabaseClient) {
+    document.getElementById('chatMensagens').innerHTML = '<div class="chat-balao suporte">Faça login para conversar.</div>';
+    return;
+  }
+
+  const { data: mensagens, error } = await supabaseClient.from('mensagens').select('*').eq('cliente_nick', CLIENTE_LOGADO).order('created_at', { ascending: true });
+
+  const container = document.getElementById('chatMensagens');
+  container.innerHTML = '';
+
+  if (error || !mensagens || mensagens.length === 0) {
+    container.innerHTML = '<div class="chat-balao suporte">Olá! Como podemos ajudar você hoje?</div>';
+  } else {
+    mensagens.forEach(m => {
+      const div = document.createElement('div');
+      div.className = `chat-balao ${m.autor === 'cliente' ? 'usuario' : 'suporte'}`;
+      div.innerHTML = m.autor === 'admin' ? `<strong>Suporte:</strong> ${m.texto}` : `${m.texto}`;
+      container.appendChild(div);
+    });
+    container.scrollTop = container.scrollHeight;
+  }
+}
+
+async function enviarMensagemChat() {
+  if (!CLIENTE_LOGADO || !supabaseClient) return alert('Faça login primeiro.');
+
+  const nick = CLIENTE_LOGADO;
+  const textoInput = document.getElementById('chatTexto');
+  const texto = textoInput.value.trim();
+  if (!texto) { alert('Digite uma mensagem.'); textoInput.focus(); return; }
+
+  textoInput.value = 'Enviando...'; textoInput.disabled = true;
+
+  const { error } = await supabaseClient.from('mensagens').insert([{ cliente_nick: nick, autor: 'cliente', texto: texto }]);
+
+  textoInput.value = ''; textoInput.disabled = false;
+  
+  if (error) {
+    alert("Erro: " + error.message);
+  } else {
+    carregarChatCliente();
+    textoInput.focus();
+  }
+}
+</script>
+
+<style>
+/* ESTILOS DO CHAT SUPORTE AO VIVO */
+.chat-toggle { position: fixed; bottom: 20px; right: 20px; z-index: 1100; width: 60px; height: 60px; border-radius: 50%; border: 4px solid #671324; background-color: #d8213a; color: #fff0c2; font-size: 28px; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 4px 4px 0 #81152a; transition: background-color 0.15s, transform 0.1s; font-family: 'VT323', monospace; }
+.chat-toggle:hover { background-color: #b91c34; }
+.chat-toggle:active { transform: translate(2px, 2px); box-shadow: none; }
+
+.chat-panel { position: fixed; bottom: 90px; right: 20px; z-index: 1100; width: 340px; max-width: calc(100vw - 40px); background-color: #edf2d8; border: 4px solid #304438; box-shadow: 6px 6px 0 #83917b; display: none; flex-direction: column; font-family: 'VT323', monospace; color: #26392f; }
+.chat-panel.aberto { display: flex; }
+.chat-header { background-color: #d8213a; color: #fff0c2; padding: 10px 12px; font-size: 22px; font-weight: bold; display: flex; align-items: center; justify-content: space-between; border-bottom: 4px solid #ffd35a; }
+.chat-fechar { background: transparent; border: none; color: #fff0c2; font-size: 26px; line-height: 1; cursor: pointer; padding: 0 4px; font-family: 'VT323', monospace; }
+.chat-fechar:hover { color: #ffd35a; }
+.chat-mensagens { flex: 1; overflow-y: auto; max-height: 240px; min-height: 120px; padding: 10px; background-color: #f7f8e9; display: flex; flex-direction: column; gap: 8px; }
+.chat-balao { padding: 8px 10px; border: 2px solid #304438; font-size: 18px; line-height: 1.4; max-width: 90%; word-wrap: break-word; }
+.chat-balao.suporte { background-color: #d3dfb9; border-color: #687b61; align-self: flex-start; }
+.chat-balao.usuario { background-color: #fff0c2; border-color: #bd1c35; align-self: flex-end; text-align: right; }
+.chat-balao strong { font-weight: bold; }
+.chat-form { padding: 10px; border-top: 3px solid #83917b; background-color: #e5edcf; display: flex; flex-direction: column; gap: 6px; }
+.chat-campo { display: flex; flex-direction: column; gap: 2px; }
+.chat-campo label { font-size: 17px; font-weight: bold; color: #26392f; }
+.chat-campo input { border: 2px solid #687b61; background-color: #f7f8e9; padding: 6px 8px; font-family: 'VT323', monospace; font-size: 18px; color: #1c2c23; outline: none; }
+.chat-campo input:focus { border-color: #bd1c35; box-shadow: 0 0 0 2px rgba(216, 33, 58, 0.25); }
+.chat-enviar { margin-top: 4px; border: 3px solid #671324; background-color: #d8213a; color: white; font-family: 'VT323', monospace; font-size: 20px; font-weight: bold; padding: 8px 12px; cursor: pointer; box-shadow: 3px 3px 0 #81152a; transition: background-color 0.15s, transform 0.1s; }
+.chat-enviar:hover { background-color: #b91c34; }
+.chat-enviar:active { transform: translate(1px, 1px); box-shadow: none; }
+</style>
+
+</body>
+</html>

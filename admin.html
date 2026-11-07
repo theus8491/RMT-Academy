@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#d8213a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<title>Painel Admin | IdleDex Academy</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.js"></script>
+<script>
+tailwind.config = { theme: { extend: { colors: {
+  academy: '#ef476f', 'academy-dark': '#d92f58', ink: '#252c48', quiet: '#68718b',
+  honey: '#fff0c2', sunshine: '#ffd447', accentBlue: '#38a7dc', leaf: '#168b68', line: '#f0dcae'
+ }, fontFamily: { display: ['VT323', 'monospace'], pixel: ['Press Start 2P', 'monospace'] } } } };
+</script>
+<style type="text/tailwindcss">
+@layer base {
+  html { @apply scroll-smooth; }
+  body { @apply m-0 min-h-screen bg-[#111721] font-display text-[#17231d]; background-image: linear-gradient(90deg,#ffffff08 1px,transparent 1px),linear-gradient(#ffffff08 1px,transparent 1px); background-size:16px 16px; }
+  p { @apply leading-6; }
+}
+@layer components {
+  .pokedex-device { @apply mx-auto my-5 max-w-[1400px] border-[8px] border-[#ffd35a] bg-[#d8213a] p-2 shadow-[0_0_0_5px_#d8213a,0_0_0_9px_#721326,10px_10px_0_#05080d,0_24px_70px_#0009] sm:my-8 sm:border-[12px] sm:p-3; }
+  .device-chrome { @apply flex h-12 items-center justify-between border-b-4 border-[#ffd35a] bg-[#e9344b] px-2 font-display text-lg font-bold tracking-wide text-[#fff0c2] sm:h-16 sm:px-5 sm:text-2xl; }
+  .device-indicators { @apply flex items-center gap-2; }
+  .device-led { @apply h-2.5 w-2.5 border-2 border-[#48101a]; }
+  .device-led-main { @apply h-8 w-8 border-4 border-[#f7efe0] bg-[#39c9e6] shadow-[0_0_0_3px_#85152a]; }
+  .device-led-red { @apply bg-[#ffb454]; }
+  .device-led-green { @apply bg-[#85d87c]; }
+  
+  .site-header { @apply relative z-20 border-b-4 border-[#ffd35a] bg-[#d8213a] px-2 py-3 shadow-[inset_0_3px_0_#ff7580]; }
+  .site-container { @apply mx-auto w-full max-w-6xl px-2 sm:px-4; }
+  .site-nav { @apply flex min-h-[62px] flex-wrap items-center justify-between gap-3; }
+  
+  main { @apply overflow-hidden border-x-4 border-b-4 border-[#50101b] bg-[#dce8c6] shadow-[inset_0_0_0_4px_#aab995]; min-height: 70vh; }
+  
+  .section-space { @apply border-b-2 border-[#bd5967] px-4 py-6 sm:px-6 sm:py-8; }
+  .card { @apply border-4 border-[#304438] bg-[#edf2d8] p-5 shadow-[4px_4px_0_#83917b] sm:p-6; }
+  .card h3 { @apply my-2 text-2xl font-bold leading-6 text-[#26392f] sm:text-3xl; }
+  
+  .btn { @apply inline-flex items-center justify-center border-4 border-[#671324] bg-[#d8213a] px-4 py-2 text-center font-display text-xl font-bold leading-6 text-white no-underline shadow-[4px_4px_0_#81152a] transition hover:bg-[#b91c34] active:translate-x-1 active:translate-y-1 active:shadow-none cursor-pointer; }
+  .btn-sm { @apply px-2 py-1 text-lg shadow-[2px_2px_0_#81152a]; }
+  .btn-outline { @apply border-4 border-[#394d3d] bg-[#d3dfb9] text-[#24392d] shadow-[4px_4px_0_#83917b] hover:bg-[#c2d2a4]; }
+  .btn-success { @apply border-[#168b68] bg-[#168b68] shadow-[4px_4px_0_#0e5e46] hover:bg-[#127659]; }
+  .btn-danger { @apply border-[#9d1830] bg-[#d8213a] shadow-[4px_4px_0_#701326] hover:bg-[#b91c34]; }
+  .btn-warning { @apply border-[#d97706] bg-[#d97706] shadow-[4px_4px_0_#92400e] hover:bg-[#b45309]; }
+  
+  .admin-tab { @apply flex-1 text-center py-3 px-4 cursor-pointer border-b-4 border-transparent font-bold text-xl text-[#536251] hover:bg-[#cbd8b4] hover:text-[#26392f] transition-colors; }
+  .admin-tab.active { @apply border-b-[#d8213a] text-[#d8213a] bg-[#e5edcf]; }
+  
+  .admin-table { @apply w-full text-left border-collapse; }
+  .admin-table th { @apply bg-[#cbd8b4] text-[#26392f] p-3 border-b-4 border-[#83917b] font-bold text-xl; }
+  .admin-table td { @apply p-3 border-b-2 border-[#aab995] text-xl text-[#334638]; }
+  .admin-table tr:hover { @apply bg-[#e5edcf]; }
+  
+  .badge { @apply inline-block px-2 py-1 text-sm font-bold border-2; }
+  .badge-pendente { @apply bg-yellow-100 border-yellow-600 text-yellow-700; }
+  .badge-aprovado { @apply bg-green-100 border-green-600 text-green-700; }
+  .badge-banido { @apply bg-red-100 border-red-600 text-red-700; }
+  .badge-multado { @apply bg-orange-100 border-orange-600 text-orange-700; }
+
+  .chat-container { @apply flex flex-col md:flex-row h-[550px] border-4 border-[#304438] bg-[#edf2d8]; }
+  .chat-sidebar { @apply w-full md:w-1/3 border-b-4 md:border-b-0 md:border-r-4 border-[#304438] bg-[#dce8c6] overflow-y-auto flex flex-col; }
+  .chat-user-item { @apply p-4 border-b-2 border-[#aab995] cursor-pointer hover:bg-[#cbd8b4] transition-colors; }
+  .chat-user-item.active { @apply bg-[#edf2d8] border-l-4 border-l-[#d8213a]; }
+  .chat-main { @apply flex-1 flex flex-col bg-[#edf2d8]; }
+  .chat-header-admin { @apply p-3 bg-[#dce8c6] border-b-4 border-[#304438] flex justify-between items-center; }
+  .chat-messages-admin { @apply flex-1 p-4 overflow-y-auto flex flex-col gap-3 bg-[#f7f8e9]; }
+  .chat-input-area { @apply p-3 bg-[#dce8c6] border-t-4 border-[#304438] flex gap-2 relative z-10; }
+  .chat-input-admin { @apply flex-1 bg-white border-2 border-[#687b61] text-[#1c2c23] p-2 font-display text-xl outline-none focus:border-[#d8213a]; }
+  
+  .msg-bubble { @apply max-w-[80%] p-3 rounded-none text-xl border-4; }
+  .msg-cliente { @apply bg-[#e5edcf] border-[#687b61] self-start shadow-[2px_2px_0_#83917b]; }
+  .msg-admin { @apply bg-[#fff0c2] border-[#d8213a] self-end shadow-[2px_2px_0_#81152a]; }
+
+  .device-bottom { @apply flex items-center justify-between border-t-4 border-[#ffd35a] bg-[#d8213a] px-2 py-3 font-display text-lg font-bold tracking-wide text-[#fff0c2] sm:px-5 sm:text-xl; }
+  .device-speaker { @apply flex gap-1.5; }
+  .device-speaker i { @apply h-2 w-5 border-2 border-[#741124] bg-[#a8172d]; }
+
+  .modal-overlay { @apply fixed inset-0 z-[2000] flex items-center justify-center bg-[#111721] bg-opacity-90 backdrop-blur-sm p-4 hidden; }
+  .modal-box { @apply border-4 border-[#ffd35a] bg-[#d8213a] p-6 max-w-md w-full shadow-[8px_8px_0_#05080d]; }
+  .modal-input { @apply w-full border-2 border-[#687b61] bg-[#f7f8e9] px-3 py-2 font-display text-xl text-[#1c2c23] outline-none focus:border-[#bd1c35]; }
+  .modal-label { @apply block text-lg font-bold text-[#fff0c2] mb-1; }
+
+  .login-screen { @apply fixed inset-0 z-[2000] flex items-center justify-center bg-[#111721] bg-opacity-95 backdrop-blur-sm p-4; }
+  .login-box { @apply border-4 border-[#ffd35a] bg-[#d8213a] p-6 max-w-md w-full shadow-[8px_8px_0_#05080d]; }
+  .login-input { @apply w-full border-2 border-[#687b61] bg-[#f7f8e9] px-3 py-2 font-display text-2xl text-[#1c2c23] outline-none focus:border-[#bd1c35] focus:ring-2 focus:ring-[#d8213a]/30; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- TELA DE LOGIN DO ADMIN -->
+<div id="loginScreen" class="login-screen hidden">
+  <div class="login-box">
+    <div class="text-center mb-6">
+      <span class="text-5xl block mb-2">🛠️</span>
+      <h2 class="font-pixel text-sm text-[#fff0c2]">ÁREA ADMINISTRATIVA</h2>
+    </div>
+    <form onsubmit="fazerLogin(event)">
+      <div class="mb-4">
+        <label class="block text-xl font-bold text-[#fff0c2] mb-1">Nickname do Administrador</label>
+        <input type="text" id="inputLoginAdmin" class="login-input" placeholder="Ex: MasterAdmin" required maxlength="30">
+      </div>
+      <button type="submit" class="btn w-full border-[#f5e9c4] bg-[#f5e9c4] text-[#9d1830] hover:bg-white shadow-[4px_4px_0_#701326]">Entrar no Painel</button>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL DE MULTA -->
+<div id="modalMulta" class="modal-overlay">
+  <div class="modal-box">
+    <h3 class="font-pixel text-sm text-[#fff0c2] mb-4 text-center">APLICAR MULTA</h3>
+    <p class="text-xl text-[#fff0c2] mb-2">Aplicar multa para: <strong id="multaClienteNick" class="text-[#ffd35a]"></strong></p>
+    
+    <form id="formMulta" onsubmit="confirmarMulta(event)">
+      <div class="mb-3">
+        <label class="modal-label">Tempo de Multa (Minutos)</label>
+        <select id="multaTempo" class="modal-input" required>
+          <option value="1">1 Minuto</option>
+          <option value="5">5 Minutos</option>
+          <option value="10">10 Minutos</option>
+          <option value="30">30 Minutos</option>
+          <option value="60">1 Hora</option>
+          <option value="1440">1 Dia</option>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label class="modal-label">Motivo da Multa</label>
+        <input type="text" id="multaMotivo" class="modal-input" placeholder="Ex: Desrespeito no chat" required>
+      </div>
+      <div class="flex gap-2 justify-end">
+        <button type="button" class="btn btn-outline btn-sm" onclick="fecharModalMulta()">Cancelar</button>
+        <button type="submit" class="btn btn-warning btn-sm">Aplicar Multa</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="pokedex-device">
+  <div class="device-chrome" aria-hidden="true">
+    <div class="device-indicators"><span class="device-led device-led-main"></span><span class="device-led device-led-red"></span><span class="device-led device-led-green"></span></div>
+    <span>IDLEDEX · ADMIN CONSOLE</span>
+    <span class="hidden sm:inline">SYSTEM READY</span>
+  </div>
+
+  <header class="site-header">
+    <nav class="site-container site-nav">
+      <a class="brand-mark flex items-center gap-3 no-underline" href="index.html">
+        <span class="grid h-12 w-12 place-items-center border-4 border-[#64101f] bg-[#f1e7bf] text-2xl text-[#d8213a] shadow-[4px_4px_0_#791427]">🛠️</span>
+        <span>
+          <span class="block font-display text-3xl font-bold leading-7 tracking-tight text-[#fff0c2] sm:text-4xl">Admin</span>
+          <span class="mt-1 block font-pixel text-[8px] tracking-[.15em] text-[#fff0c2] sm:text-[9px]">PANEL</span>
+        </span>
+      </a>
+      <div class="flex w-full flex-wrap items-center justify-end gap-1 md:w-auto">
+        <a class="border-2 border-[#8a1528] bg-[#bd1c33] px-2.5 py-2 font-display text-xl font-bold leading-5 text-[#fff0c2] no-underline shadow-[2px_2px_0_#731123] transition hover:bg-[#98182c] sm:px-3 sm:py-2.5 sm:text-2xl" href="index.html">Voltar ao Site</a>
+        <button class="border-2 border-[#8a1528] bg-[#bd1c33] px-2.5 py-2 font-display text-xl font-bold leading-5 text-[#fff0c2] no-underline shadow-[2px_2px_0_#731123] transition hover:bg-[#98182c] sm:px-3 sm:py-2.5 sm:text-2xl cursor-pointer" onclick="fazerLogout()">Sair</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="flex flex-wrap border-b-4 border-[#bd5967] bg-[#dce8c6]">
+      <div class="admin-tab active" onclick="mudarAba('visao', this)">📊 Visão Geral</div>
+      <div class="admin-tab" onclick="mudarAba('aprovacoes', this)">⏳ Aprovações</div>
+      <div class="admin-tab" onclick="mudarAba('clientes', this)">👥 Clientes</div>
+      <div class="admin-tab" onclick="mudarAba('chat', this)">💬 Chat ao Vivo</div>
+    </div>
+
+    <section id="aba-visao" class="section-space block aba-conteudo">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div class="card border-l-8 border-l-[#38a7dc]">
+          <h3 class="text-xl">TOTAL DE CLIENTES</h3>
+          <p class="text-4xl font-bold text-[#26392f]" id="totalClientes">0</p>
+        </div>
+        <div class="card border-l-8 border-l-[#ffd447]">
+          <h3 class="text-xl">AGUARDANDO APROVAÇÃO</h3>
+          <p class="text-4xl font-bold text-[#26392f]" id="totalPendentes">0</p>
+        </div>
+        <div class="card border-l-8 border-l-[#168b68]">
+          <h3 class="text-xl">CHATS ABERTOS</h3>
+          <p class="text-4xl font-bold text-[#26392f]" id="totalChats">0</p>
+        </div>
+        <!-- CARD DE ADMINS ONLINE -->
+        <div class="card border-l-8 border-l-[#ef476f] bg-[#f8edcc]">
+          <h3 class="text-xl flex items-center gap-2">🟢 ADMINS ONLINE</h3>
+          <div id="listaAdminsOnline" class="text-lg mt-2 font-bold text-[#26392f] max-h-32 overflow-y-auto">
+            Carregando...
+          </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <h3 class="text-2xl">Bem-vindo, <span id="nomeAdminLogado" class="text-[#d8213a]"></span></h3>
+        <div class="mt-6 border-t-4 border-[#83917b] pt-4">
+          <h4 class="text-xl font-bold text-[#26392f] mb-2">Últimas Ações no Sistema (Log)</h4>
+          <div class="bg-[#dce8c6] border-2 border-[#687b61] p-3 h-40 overflow-y-auto" id="logAtividades"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="aba-aprovacoes" class="section-space hidden aba-conteudo">
+      <div class="card p-0 overflow-hidden">
+        <div class="p-4 border-b-4 border-[#83917b] bg-[#cbd8b4]">
+          <h3 class="text-2xl m-0 text-[#26392f]">Solicitações de Cadastro</h3>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Nickname</th>
+                <th>E-mail</th>
+                <th>Plano Escolhido</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tabelaAprovacoes"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="aba-clientes" class="section-space hidden aba-conteudo">
+      <div class="card p-0 overflow-hidden">
+        <div class="p-4 border-b-4 border-[#83917b] bg-[#cbd8b4]">
+          <h3 class="text-2xl m-0 text-[#26392f]">Todos os Clientes</h3>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Nickname</th>
+                <th>Assinatura Ativa</th>
+                <th>Status / Multa</th>
+                <th>Aprovado Por</th>
+                <th>Ações Rápidas</th>
+              </tr>
+            </thead>
+            <tbody id="tabelaClientes"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="aba-chat" class="section-space hidden aba-conteudo">
+      <div class="mb-4 flex justify-between items-center bg-[#cbd8b4] border-4 border-[#304438] p-3">
+        <p class="text-lg font-bold text-[#26392f]">Selecione um cliente na lista ao lado para responder.</p>
+        <button class="btn btn-sm btn-outline" onclick="carregarDados()">🔄 Atualizar</button>
+      </div>
+
+      <div class="chat-container">
+        <div class="chat-sidebar">
+          <div id="chatSidebarClientes" class="flex-1 overflow-y-auto"></div>
+        </div>
+        
+        <div class="chat-main">
+          <div class="chat-header-admin">
+            <div>
+              <h3 class="font-bold text-2xl text-[#26392f]" id="chatNomeAtivo">Selecione um cliente</h3>
+              <p class="text-lg text-[#536251]" id="chatStatusAtivo">Clique em uma conversa ao lado.</p>
+            </div>
+            
+            <div id="chatAcoes" class="hidden flex gap-2">
+              <button type="button" class="btn btn-sm btn-warning" id="btnMultarChat" onclick="multarPeloChat()" title="Aplicar Multa">⚠️ Multar</button>
+              <button type="button" class="btn btn-sm btn-danger" id="btnBanirChat" onclick="banirPeloChat()" title="Banir Cliente">🚫 Banir</button>
+              <button type="button" class="btn btn-sm btn-success hidden" id="btnDesbanirChat" onclick="desbanirPeloChat()" title="Remover Punição">✅ Desbanir</button>
+            </div>
+          </div>
+          
+          <div class="chat-messages-admin" id="chatMessagesAdmin">
+            <div class="text-center text-[#536251] mt-10 text-xl font-bold">Nenhuma conversa selecionada.</div>
+          </div>
+          
+          <div class="chat-input-area">
+            <input type="text" id="chatAdminInput" class="chat-input-admin" placeholder="Digite sua resposta..." disabled>
+            <button type="button" class="btn btn-sm" onclick="enviarRespostaAdmin()" disabled id="btnEnviarAdmin">Enviar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="device-bottom" aria-hidden="true">
+    <span>ADMIN TRAINING SYSTEM</span>
+    <span class="device-speaker"><i></i><i></i><i></i><i></i><i></i></span>
+    <span>V.01 · IDLEDEX</span>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://tkrbfimaobuxxrvmkexv.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_7iBYHmIK02nPEgdAVSOK6A_c32QH0rK';
+let supabaseClient = null;
+
+if (window.supabase) {
+  supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+} else {
+  console.error("Erro: Biblioteca do Supabase não carregou.");
+}
+
+let ADMIN_ATUAL = localStorage.getItem('idledex_admin_nick');
+let clientes = [];
+let conversas = [];
+let logs = [];
+let adminsOnline = [];
+let conversaAtivaId = null;
+let clienteMultaId = null;
+
+// --- SISTEMA DE LOGIN DO ADMIN ---
+function verificarLogin() {
+  const loginScreen = document.getElementById('loginScreen');
+  if (!ADMIN_ATUAL) {
+    loginScreen.classList.remove('hidden');
+  } else {
+    loginScreen.classList.add('hidden');
+    document.getElementById('nomeAdminLogado').textContent = ADMIN_ATUAL;
+    
+    registrarPresencaAdmin();
+    carregarDados();
+    
+    // Atualiza os dados principais a cada 5s
+    setInterval(carregarDados, 5000);
+    
+    // Atualiza a presença e a lista de online a cada 10s (tempo real)
+    setInterval(() => {
+      registrarPresencaAdmin();
+      carregarAdminsOnline();
+    }, 10000);
+  }
+}
+
+// --- REGISTRAR PRESENÇA E BUSCAR ADMINS ONLINE ---
+async function registrarPresencaAdmin() {
+  if (!supabaseClient || !ADMIN_ATUAL) return;
+  
+  // Grava o "ping" de presença no banco com a hora atual
+  await supabaseClient.from('admins').upsert(
+    { nome: ADMIN_ATUAL, last_seen: new Date().toISOString() }, 
+    { onConflict: 'nome' }
+  );
+}
+
+async function carregarAdminsOnline() {
+  if (!supabaseClient) return;
+  try {
+    // Puxa do banco a lista atualizada
+    const { data } = await supabaseClient.from('admins').select('*').order('last_seen', { ascending: false });
+    if (data) {
+      adminsOnline = data;
+      renderizarAdminsOnline();
+    }
+  } catch (e) {
+    console.error("Erro admins:", e);
+  }
+}
+
+function renderizarAdminsOnline() {
+  const container = document.getElementById('listaAdminsOnline');
+  container.innerHTML = '';
+  
+  if (adminsOnline.length === 0) {
+    container.innerHTML = '<span class="text-gray-500">Nenhum admin registrado.</span>';
+    return;
+  }
+
+  const agora = new Date();
+
+  adminsOnline.forEach(admin => {
+    // Converte o horário do banco para o horário local
+    const dataVisto = new Date(admin.last_seen);
+    
+    // Cálculo de diferença em minutos
+    const diffMin = Math.floor((agora - dataVisto) / (1000 * 60));
+    
+    let statusVisual = '';
+    let tempoVisual = '';
+
+    // Se a última ação foi há menos de 2 minutos, está ONLINE
+    if (diffMin < 2) {
+      statusVisual = '🟢';
+      tempoVisual = 'Online agora';
+    } else if (diffMin < 60) {
+      statusVisual = '🟡';
+      tempoVisual = `Há ${diffMin} min`;
+    } else {
+      statusVisual = '🔴';
+      tempoVisual = `${Math.floor(diffMin / 60)}h atrás`;
+    }
+
+    container.innerHTML += `
+      <div class="flex items-center justify-between border-b border-[#aab995] py-1 last:border-0">
+        <span>${statusVisual} ${admin.nome}</span>
+        <span class="text-sm font-normal text-[#68718b] italic">${tempoVisual}</span>
+      </div>
+    `;
+  });
+}
+
+function fazerLogin(event) {
+  event.preventDefault();
+  const nick = document.getElementById('inputLoginAdmin').value.trim();
+  if (nick) {
+    localStorage.setItem('idledex_admin_nick', nick);
+    ADMIN_ATUAL = nick;
+    verificarLogin();
+  }
+}
+
+function fazerLogout() {
+  localStorage.removeItem('idledex_admin_nick');
+  ADMIN_ATUAL = null;
+  window.location.href = 'index.html';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  verificarLogin();
+});
+
+// --- FUNÇÕES GERAIS DO PAINEL ---
+async function carregarDados() {
+  if (!supabaseClient) return;
+  try {
+    const { data: c, error: errC } = await supabaseClient.from('clientes').select('*').order('nick');
+    if (errC) throw errC;
+    if (c) clientes = c;
+    
+    const { data: l, error: errL } = await supabaseClient.from('logs').select('*').order('created_at', { ascending: false }).limit(20);
+    if (errL) throw errL;
+    if (l) logs = l;
+
+    const { data: m, error: errM } = await supabaseClient.from('mensagens').select('*').order('created_at');
+    if (errM) throw errM;
+    if (m) {
+      const agrupado = {};
+      m.forEach(msg => {
+        if (!agrupado[msg.cliente_nick]) {
+          agrupado[msg.cliente_nick] = { nick: msg.cliente_nick, mensagens: [] };
+        }
+        agrupado[msg.cliente_nick].mensagens.push(msg);
+      });
+      conversas = Object.values(agrupado);
+    }
+    
+    atualizarDashboard();
+    renderizarTabelas();
+    renderizarLogs();
+    renderizarListaChats();
+    
+    if (conversaAtivaId) {
+      const conversa = conversas.find(c => c.nick === conversaAtivaId);
+      if (conversa) renderizarMensagens(conversaAtivaId);
+    }
+  } catch (error) {
+    console.error("Erro ao carregar dados: ", error);
+  }
+}
+
+function mudarAba(abaId, element) {
+  document.querySelectorAll('.aba-conteudo').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('.admin-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('aba-' + abaId).classList.remove('hidden');
+  element.classList.add('active');
+}
+
+async function registrarLog(acao) {
+  if (!supabaseClient) return;
+  await supabaseClient.from('logs').insert([{ admin_nome: ADMIN_ATUAL, acao: acao }]);
+}
+
+// --- CÁLCULO DE VENCIMENTO ---
+function calcularVencimento(dataInicioISO, plano) {
+  if (!dataInicioISO) return 'N/A';
+  if (plano && (plano.includes('Vitalício') || plano.includes('Vitalicio'))) return 'Vitalício ♾️';
+  const dataInicio = new Date(dataInicioISO);
+  if (isNaN(dataInicio.getTime())) return 'Data Inválida';
+  const dataVencimento = new Date(dataInicio);
+  if (plano) {
+    if (plano.includes('1 dia')) dataVencimento.setDate(dataVencimento.getDate() + 1);
+    else if (plano.includes('1 semana')) dataVencimento.setDate(dataVencimento.getDate() + 7);
+    else if (plano.includes('Mensal') || plano.includes('1 mês')) dataVencimento.setMonth(dataVencimento.getMonth() + 1);
+  }
+  return dataVencimento.toLocaleDateString('pt-BR');
+}
+
+function isVencendoProximo(dataInicioISO, plano) {
+  if (!dataInicioISO || (plano && plano.includes('Vitalício'))) return false;
+  const dataInicio = new Date(dataInicioISO);
+  if (isNaN(dataInicio.getTime())) return false;
+  const dataVencimento = new Date(dataInicio);
+  if (plano.includes('1 dia')) dataVencimento.setDate(dataVencimento.getDate() + 1);
+  else if (plano.includes('1 semana')) dataVencimento.setDate(dataVencimento.getDate() + 7);
+  else if (plano.includes('Mensal') || plano.includes('1 mês')) dataVencimento.setMonth(dataVencimento.getMonth() + 1);
+  const hoje = new Date();
+  const diffDias = (dataVencimento - hoje) / (1000 * 60 * 60 * 24);
+  return diffDias >= 0 && diffDias <= 3;
+}
+
+// --- RENDERIZAÇÃO ---
+function atualizarDashboard() {
+  document.getElementById('totalClientes').textContent = clientes.length;
+  const pendentes = clientes.filter(c => c.status === 'pendente').length;
+  document.getElementById('totalPendentes').textContent = pendentes;
+  document.getElementById('totalChats').textContent = conversas.length;
+}
+
+function renderizarLogs() {
+  const container = document.getElementById('logAtividades');
+  container.innerHTML = '';
+  if (logs.length === 0) {
+    container.innerHTML = '<div class="text-[#536251] text-lg">Nenhuma ação registrada.</div>';
+    return;
+  }
+  logs.forEach(log => {
+    const dataStr = new Date(log.created_at).toLocaleString('pt-BR');
+    container.innerHTML += `
+      <div class="text-lg border-b border-[#aab995] py-1 last:border-0">
+        <span class="text-[#68718b] text-sm">[${dataStr}]</span> 
+        <strong class="text-[#d8213a]">${log.admin_nome}</strong>: ${log.acao}
+      </div>
+    `;
+  });
+}
+
+function renderizarTabelas() {
+  // Aprovações
+  const tbodyAprovacoes = document.getElementById('tabelaAprovacoes');
+  tbodyAprovacoes.innerHTML = '';
+  const pendentes = clientes.filter(c => c.status === 'pendente');
+  
+  if (pendentes.length === 0) {
+    tbodyAprovacoes.innerHTML = '<tr><td colspan="5" class="text-center py-6 text-[#68718b] font-bold">Nenhuma solicitação pendente.</td></tr>';
+  } else {
+    pendentes.forEach(c => {
+      tbodyAprovacoes.innerHTML += `
+        <tr>
+          <td class="font-bold">${c.nick}</td>
+          <td>${c.email || '-'}</td>
+          <td class="font-bold text-[#d8213a]">${c.plano || 'Nenhum'}</td>
+          <td><span class="badge badge-pendente">PENDENTE</span></td>
+          <td class="flex gap-2">
+            <button class="btn btn-sm btn-success" onclick="mudarStatus('${c.nick}', 'aprovado')">Aprovar</button>
+            <button class="btn btn-sm btn-danger" onclick="mudarStatus('${c.nick}', 'banido')">Negar</button>
+          </td>
+        </tr>
+      `;
+    });
+  }
+
+  // Clientes
+  const tbodyClientes = document.getElementById('tabelaClientes');
+  tbodyClientes.innerHTML = '';
+  if (clientes.length === 0) {
+    tbodyClientes.innerHTML = '<tr><td colspan="5" class="text-center py-6 text-[#68718b] font-bold">Nenhum cliente cadastrado.</td></tr>';
+  } else {
+    clientes.forEach(c => {
+      let badgeClass = 'badge-aprovado';
+      let statusTexto = c.status.toUpperCase();
+      if (c.status === 'pendente') badgeClass = 'badge-pendente';
+      if (c.status === 'banido') badgeClass = 'badge-banido';
+      if (c.status === 'multado') { badgeClass = 'badge-multado'; statusTexto = `MULTADO (${c.tempo_multa} min)`; }
+
+      let infoAssinatura = '-';
+      let alertaVencimento = '';
+      if (c.status === 'aprovado' && c.plano) {
+        const vencimento = calcularVencimento(c.data_inicio, c.plano);
+        const proximo = isVencendoProximo(c.data_inicio, c.plano);
+        if (proximo) {
+          alertaVencimento = `<span class="text-red-600 font-bold ml-1" title="Vence em breve!">⚠️</span>`;
+        }
+        infoAssinatura = `
+          <div class="bg-[#e5edcf] border-2 border-[#168b68] p-2 inline-block">
+            <strong class="text-[#168b68] block text-lg">${c.plano} ${alertaVencimento}</strong>
+            <span class="text-sm text-[#334638]">Vence em: ${vencimento}</span>
+          </div>
+        `;
+      } else if (c.plano && c.plano !== 'Nenhum') {
+        infoAssinatura = `<span class="text-[#68718b] italic">${c.plano} (Aguardando)</span>`;
+      }
+
+      let btnAcoes = `
+        <button class="btn btn-sm btn-warning" onclick="abrirModalMulta('${c.nick}')">Multar</button>
+        <button class="btn btn-sm btn-danger" onclick="banirCliente('${c.nick}')">Banir</button>
+      `;
+
+      if (c.status === 'banido' || c.status === 'multado') {
+        btnAcoes = `
+          <button class="btn btn-sm btn-success w-full" onclick="desbanirCliente('${c.nick}')">✅ Desbanir</button>
+        `;
+      }
+
+      tbodyClientes.innerHTML += `
+        <tr>
+          <td class="font-bold">${c.nick} ${alertaVencimento}</td>
+          <td>${infoAssinatura}</td>
+          <td><span class="badge ${badgeClass}">${statusTexto}</span></td>
+          <td class="text-[#536251] italic">${c.aprovado_por || '-'}</td>
+          <td class="flex gap-2">${btnAcoes}</td>
+        </tr>
+      `;
+    });
+  }
+}
+
+// --- AÇÕES ---
+async function mudarStatus(nick, novoStatus) {
+  if (!supabaseClient) return;
+  const updateData = { status: novoStatus };
+  if (novoStatus === 'aprovado') {
+    updateData.aprovado_por = ADMIN_ATUAL;
+    updateData.data_inicio = new Date().toISOString();
+    registrarLog(`Aprovou o plano de ${nick}.`);
+  } else if (novoStatus === 'banido') {
+    registrarLog(`Negou/Baniu o cadastro de ${nick}.`);
+  }
+
+  const { error } = await supabaseClient.from('clientes').update(updateData).eq('nick', nick);
+  if (error) alert("Erro: " + error.message);
+  carregarDados();
+}
+
+async function abrirModalMulta(nick) {
+  const alvo = nick || conversaAtivaId;
+  if (!alvo) return alert("Selecione um cliente primeiro.");
+  clienteMultaId = alvo;
+  document.getElementById('multaClienteNick').textContent = alvo;
+  document.getElementById('multaMotivo').value = '';
+  document.getElementById('multaTempo').value = '5';
+  document.getElementById('modalMulta').classList.remove('hidden');
+}
+
+function fecharModalMulta() {
+  document.getElementById('modalMulta').classList.add('hidden');
+  clienteMultaId = null;
+}
+
+async function confirmarMulta(event) {
+  event.preventDefault();
+  if (!clienteMultaId || !supabaseClient) return;
+
+  const tempo = document.getElementById('multaTempo').value;
+  const motivo = document.getElementById('multaMotivo').value.trim();
+
+  const { error } = await supabaseClient.from('clientes').update({
+    status: 'multado',
+    tempo_multa: tempo,
+    motivo_multa: motivo
+  }).eq('nick', clienteMultaId);
+
+  if (error) return alert("Erro: " + error.message);
+
+  await supabaseClient.from('mensagens').insert([{
+    cliente_nick: clienteMultaId,
+    autor: 'admin',
+    texto: `[SISTEMA] Você recebeu uma multa de ${tempo} minutos pelo motivo: ${motivo}.`
+  }]);
+
+  registrarLog(`Aplicou multa de ${tempo} min em ${clienteMultaId}. Motivo: ${motivo}`);
+  alert(`Multa aplicada em ${clienteMultaId}!`);
+  fecharModalMulta();
+  carregarDados();
+  if (conversaAtivaId === clienteMultaId) abrirConversa(clienteMultaId);
+}
+
+async function banirCliente(nick) {
+  const alvo = nick || conversaAtivaId;
+  if (!alvo || !supabaseClient) return alert("Selecione um cliente primeiro.");
+
+  if (confirm(`Tem certeza que deseja BANIR ${alvo} permanentemente?`)) {
+    const { error } = await supabaseClient.from('clientes').update({ status: 'banido' }).eq('nick', alvo);
+    if (error) return alert("Erro: " + error.message);
+
+    await supabaseClient.from('mensagens').insert([{
+      cliente_nick: alvo,
+      autor: 'admin',
+      texto: `[SISTEMA] Esta conta foi banida permanentemente.`
+    }]);
+
+    registrarLog(`Baniu o cliente ${alvo}.`);
+    alert(`${alvo} banido!`);
+    carregarDados();
+    if (conversaAtivaId === alvo) abrirConversa(alvo);
+  }
+}
+
+async function desbanirCliente(nick) {
+  if (!nick || !supabaseClient) return;
+  if (confirm(`Remover a punição de ${nick}?`)) {
+    const { error } = await supabaseClient.from('clientes').update({ 
+      status: 'aprovado',
+      tempo_multa: 0,
+      motivo_multa: null
+    }).eq('nick', nick);
+
+    if (error) return alert("Erro: " + error.message);
+
+    await supabaseClient.from('mensagens').insert([{
+      cliente_nick: nick,
+      autor: 'admin',
+      texto: `[SISTEMA] Sua conta foi desbanida/liberada por um administrador.`
+    }]);
+
+    registrarLog(`Removeu a punição de ${nick}.`);
+    alert(`${nick} foi desbanido e liberado!`);
+    carregarDados();
+    if (conversaAtivaId === nick) abrirConversa(nick);
+  }
+}
+
+function multarPeloChat() { if (conversaAtivaId) abrirModalMulta(conversaAtivaId); }
+function banirPeloChat() { if (conversaAtivaId) banirCliente(conversaAtivaId); }
+function desbanirPeloChat() { if (conversaAtivaId) desbanirCliente(conversaAtivaId); }
+
+// --- SISTEMA DE CHAT (LISTA COMPLETA DE NICKNAMES) ---
+function renderizarListaChats() {
+  const sidebar = document.getElementById('chatSidebarClientes');
+  sidebar.innerHTML = '';
+  
+  if (clientes.length === 0) {
+    sidebar.innerHTML = '<div class="p-4 text-center text-[#68718b] font-bold">Nenhum cliente cadastrado.</div>';
+    return;
+  }
+
+  clientes.forEach(c => {
+    const ativo = c.nick === conversaAtivaId ? 'active' : '';
+    const conversa = conversas.find(conv => conv.nick === c.nick);
+    const ultimaMsg = conversa && conversa.mensagens.length > 0 ? conversa.mensagens[conversa.mensagens.length - 1].texto : 'Sem mensagens ainda';
+    
+    let iconeAlerta = '';
+    if (c.status === 'aprovado' && isVencendoProximo(c.data_inicio, c.plano)) {
+      iconeAlerta = ' <span class="text-red-500" title="Plano perto do vencimento">⚠️</span>';
+    }
+
+    sidebar.innerHTML += `
+      <div class="chat-user-item ${ativo}" onclick="abrirConversa('${c.nick}')">
+        <div class="flex justify-between items-center mb-1">
+          <span class="font-bold text-[#26392f]">${c.nick} ${iconeAlerta}</span>
+          <span class="text-sm font-bold ${c.status === 'banido' ? 'text-red-500' : (c.status === 'multado' ? 'text-orange-500' : 'text-[#168b68]')}">${c.status.toUpperCase()}</span>
+        </div>
+        <div class="text-[#536251] text-lg truncate">${ultimaMsg}</div>
+      </div>
+    `;
+  });
+}
+
+function abrirConversa(nick) {
+  conversaAtivaId = nick;
+  const cliente = clientes.find(c => c.nick === nick);
+  if (!cliente) return;
+
+  document.getElementById('chatNomeAtivo').textContent = nick;
+  
+  let statusTxt = 'Online agora';
+  if (cliente.status === 'aprovado') {
+    const vencimento = calcularVencimento(cliente.data_inicio, cliente.plano);
+    statusTxt = `Plano: ${cliente.plano} (Vence: ${vencimento})`;
+    if (isVencendoProximo(cliente.data_inicio, cliente.plano)) {
+      statusTxt += ' ⚠️ ALERTA DE VENCIMENTO!';
+    }
+  } else {
+    statusTxt = `Status: ${cliente.status.toUpperCase()}`;
+  }
+  
+  document.getElementById('chatStatusAtivo').textContent = statusTxt;
+  document.getElementById('chatAcoes').classList.remove('hidden');
+
+  const btnMultar = document.getElementById('btnMultarChat');
+  const btnBanir = document.getElementById('btnBanirChat');
+  const btnDesbanir = document.getElementById('btnDesbanirChat');
+
+  if (cliente.status === 'banido' || cliente.status === 'multado') {
+    btnMultar.classList.add('hidden');
+    btnBanir.classList.add('hidden');
+    btnDesbanir.classList.remove('hidden');
+  } else {
+    btnMultar.classList.remove('hidden');
+    btnBanir.classList.remove('hidden');
+    btnDesbanir.classList.add('hidden');
+  }
+
+  const input = document.getElementById('chatAdminInput');
+  const btn = document.getElementById('btnEnviarAdmin');
+  input.disabled = false;
+  btn.disabled = false;
+  setTimeout(() => input.focus(), 100);
+
+  renderizarMensagens(nick);
+  renderizarListaChats();
+}
+
+function renderizarMensagens(nick) {
+  const conversa = conversas.find(c => c.nick === nick);
+  const chatBox = document.getElementById('chatMessagesAdmin');
+  chatBox.innerHTML = '';
+  
+  if (!conversa || !conversa.mensagens || conversa.mensagens.length === 0) {
+    chatBox.innerHTML = '<div class="text-center text-[#536251] mt-10 text-xl">Nenhuma mensagem.</div>';
+  } else {
+    conversa.mensagens.forEach(m => {
+      const bubbleClass = m.autor === 'cliente' ? 'msg-cliente' : 'msg-admin';
+      chatBox.innerHTML += `<div class="msg-bubble ${bubbleClass}">${m.texto}</div>`;
+    });
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+}
+
+async function enviarRespostaAdmin() {
+  if (!conversaAtivaId || !supabaseClient) return;
+  const input = document.getElementById('chatAdminInput');
+  const texto = input.value.trim();
+  if (!texto) return input.focus();
+
+  input.value = 'Enviando...';
+  input.disabled = true;
+
+  const { error } = await supabaseClient.from('mensagens').insert([{
+    cliente_nick: conversaAtivaId,
+    autor: 'admin',
+    texto: texto
+  }]);
+
+  input.value = '';
+  input.disabled = false;
+
+  if (error) {
+    alert("Erro ao enviar: " + error.message);
+  } else {
+    await carregarDados();
+    setTimeout(() => abrirConversa(conversaAtivaId), 500);
+  }
+}
+
+document.getElementById('chatAdminInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    enviarRespostaAdmin();
+  }
+});
+</script>
+</body>
+</html>
