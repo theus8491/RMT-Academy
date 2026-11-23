@@ -1,0 +1,23 @@
+{
+  "name": "Baiano Store",
+  "short_name": "Baiano Store",
+  "description": "Sua loja de TMs e Pokémon",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1e2638",
+  "theme_color": "#d8213a",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

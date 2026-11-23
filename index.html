@@ -7,16 +7,18 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-<title>IdleDex Academy | Aprenda, evolua e negocie</title>
+<title>Baiano Store | TMs, Silver e Pokémon</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.js"></script>
 <script>
 tailwind.config = { theme: { extend: { colors: {
-  academy: '#ef476f', 'academy-dark': '#d92f58', ink: '#252c48', quiet: '#68718b',
-  honey: '#fff0c2', sunshine: '#ffd447', accentBlue: '#38a7dc', leaf: '#168b68', line: '#f0dcae'
- }, fontFamily: { display: ['VT323', 'monospace'], pixel: ['Press Start 2P', 'monospace'] } } } };
+  baiano: '#ef476f', 'baiano-dark': '#d92f58', ink: '#252c48',
+  honey: '#fff0c2', sunshine: '#ffd447', accentBlue: '#38a7dc',
+  leaf: '#168b68', line: '#f0dcae'
+}, fontFamily: { display: ['VT323', 'monospace'], pixel: ['Press Start 2P', 'monospace'] } } } };
 </script>
+
 <style type="text/tailwindcss">
 @layer base {
   html { @apply scroll-smooth; }
@@ -40,388 +42,311 @@ tailwind.config = { theme: { extend: { colors: {
   .brand-caption { @apply mt-1 block font-pixel text-[8px] tracking-[.15em] text-[#fff0c2] sm:text-[9px]; }
   .nav-menu { @apply flex w-full flex-wrap items-center justify-end gap-1 md:w-auto; }
   .nav-link { @apply border-2 border-[#8a1528] bg-[#bd1c33] px-2.5 py-2 font-display text-xl font-bold leading-5 text-[#fff0c2] no-underline shadow-[2px_2px_0_#731123] transition hover:bg-[#98182c] sm:px-3 sm:py-2.5 sm:text-2xl; }
-  .header-login { @apply ml-1 inline-flex cursor-pointer items-center gap-2 border-2 border-[#50101b] bg-[#f5e9c4] px-3 py-2 font-display text-xl font-bold text-[#9d1830] shadow-[3px_3px_0_#701326] hover:bg-white; }
   main { @apply overflow-hidden border-x-4 border-b-4 border-[#50101b] bg-[#dce8c6] shadow-[inset_0_0_0_4px_#aab995]; }
-  .hero { @apply relative isolate overflow-hidden border-b-4 border-[#ffd35a] bg-[#233a32] px-5 py-16 text-center sm:py-20; }
+  .hero { @apply relative isolate overflow-hidden border-b-4 border-[#ffd35a] bg-[#233a32] px-5 py-12 text-center; }
   .hero-bg { @apply absolute inset-0 -z-20 h-full w-full object-cover; image-rendering:pixelated; filter:contrast(1.08) brightness(.72) saturate(.9); }
   .hero::before { content:""; @apply absolute inset-0 -z-10 bg-[#0b1715]/45; }
-  .hero::after { content:""; @apply pointer-events-none absolute inset-0 -z-10 opacity-20; background:repeating-linear-gradient(to bottom,transparent 0,transparent 3px,#000 4px); }
   .tag { @apply inline-flex border-2 border-[#f5d26f] bg-[#243c32] px-3 py-2 font-display text-xl font-bold leading-5 tracking-wider text-[#ffdf77] shadow-[3px_3px_0_#101a18]; }
-  .hero-title { @apply mx-auto my-6 max-w-4xl bg-transparent px-2 py-2 font-pixel text-lg leading-[1.9] tracking-normal text-[#f3edcf] sm:text-2xl md:text-3xl; }
+  .hero-title { @apply mx-auto my-4 max-w-4xl bg-transparent px-2 py-2 font-pixel text-lg leading-[1.9] text-[#f3edcf] sm:text-2xl; }
   .hero-title span { @apply !text-[#ff6471]; }
-  .hero-copy { @apply mx-auto mb-7 max-w-2xl bg-transparent px-2 py-1 text-xl leading-6 text-[#e1ebcc] sm:text-2xl; }
-  .section-space { @apply border-b-2 border-[#bd5967] px-4 py-10 sm:px-8 sm:py-14; }
-  .section-title { @apply mb-7 text-center; }
-  .section-title h2 { @apply my-3 font-pixel text-[12px] leading-[1.9] text-[#293a31] sm:text-sm; }
-  .section-title p { @apply mx-auto my-3 max-w-2xl text-xl leading-6 text-[#4d5d4c] sm:text-2xl; }
-  .course-grid { @apply grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4; }
-  .two-column-grid { @apply grid grid-cols-1 gap-4 md:grid-cols-2; }
-  .card { @apply border-4 border-[#304438] bg-[#edf2d8] p-5 shadow-[4px_4px_0_#83917b] transition duration-150 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#83917b] sm:p-6; }
-  .card h3 { @apply my-2 text-2xl font-bold leading-6 text-[#26392f] sm:text-3xl; }
-  .card p { @apply text-xl leading-5 text-[#536251] sm:text-2xl; }
-  .card ul { @apply list-none p-0 text-xl leading-6 text-[#334638]; }
-  .card li::before { content:"▪ "; @apply font-black text-[#c6233c]; }
-  .price { @apply my-3 text-4xl font-bold text-[#b31c34] sm:text-5xl; }
-  .featured { @apply border-4 border-[#bb1f38] bg-[#f8edcc] shadow-[4px_4px_0_#9a182c]; }
-  .popular { @apply inline-flex border-2 border-[#69202a] bg-[#d52a42] px-2 py-2 font-pixel text-[7px] text-[#fff0c2]; }
-  .btn { @apply inline-flex w-full items-center justify-center border-4 border-[#671324] bg-[#d8213a] px-4 py-3 text-center font-display text-2xl font-bold leading-6 text-white no-underline shadow-[4px_4px_0_#81152a] transition hover:bg-[#b91c34] active:translate-x-1 active:translate-y-1 active:shadow-none; }
-  .btn-outline { @apply border-4 border-[#394d3d] bg-[#d3dfb9] text-[#24392d] shadow-[4px_4px_0_#83917b] hover:bg-[#c2d2a4]; }
-  .btn-auto { @apply w-auto min-w-[220px]; }
-  .course-icon { @apply mb-3 text-3xl; }
-  .note { @apply mt-5 text-center text-lg text-[#5b6958]; }
-  .highlight { @apply border-4 border-[#506448] bg-[#e8efcf] p-5 shadow-[5px_5px_0_#9ca989] sm:p-8; }
-  .steps { @apply grid grid-cols-1 gap-4 md:grid-cols-3; }
-  .step-number { @apply inline-grid h-9 w-9 place-items-center border-4 border-[#6c5424] bg-[#f4d674] font-pixel text-xs text-[#493a1b]; }
-  .faq details { @apply border-b-2 border-dashed border-[#93a285] py-4; }
-  .faq summary { @apply cursor-pointer text-xl font-bold text-[#27392d] hover:text-[#b31c34] sm:text-2xl; }
-  .faq details p { @apply text-xl text-[#536251] sm:text-2xl; }
-  .site-footer { @apply border-t-4 border-[#731123] bg-[#25372f] px-5 py-7 text-center text-lg text-[#dce8c6]; }
+  .section-space { @apply border-b-2 border-[#bd5967] px-4 py-8 sm:px-8 sm:py-12; }
+  .section-title h2 { @apply my-2 font-pixel text-[12px] leading-[1.9] text-[#293a31] sm:text-sm; }
+  .section-title p { @apply mx-auto my-2 max-w-2xl text-xl leading-6 text-[#4d5d4c] sm:text-2xl; }
+  .card { @apply border-4 border-[#304438] bg-[#edf2d8] p-4 shadow-[4px_4px_0_#83917b]; }
+  .site-footer { @apply relative border-t-4 border-[#731123] bg-[#25372f] px-5 py-6 text-center text-lg text-[#dce8c6]; }
   .site-footer strong { @apply font-display text-2xl font-bold leading-6 text-[#ffdc77]; }
-  .device-bottom { @apply flex items-center justify-between border-t-4 border-[#ffd35a] bg-[#d8213a] px-2 py-3 font-display text-lg font-bold tracking-wide text-[#fff0c2] sm:px-5 sm:text-xl; }
-  .device-speaker { @apply flex gap-1.5; }
-  .device-speaker i { @apply h-2 w-5 border-2 border-[#741124] bg-[#a8172d]; }
-  .auth-overlay { @apply fixed inset-0 z-[1000] hidden items-center justify-center overflow-y-auto bg-[#101721]/85 p-4 backdrop-blur-sm; }
-  .auth-overlay.open { @apply flex; }
-  .auth-card { @apply relative grid w-full max-w-4xl grid-cols-1 overflow-hidden border-4 border-[#56101d] bg-[#e5edcf] shadow-[8px_8px_0_#0009] md:grid-cols-[.82fr_1.18fr]; }
-  .auth-art { @apply flex min-h-[150px] flex-col justify-between border-b-4 border-[#681324] bg-[#d8213a] p-5 text-[#fff0c2] md:min-h-[560px] md:border-b-0 md:border-r-4 md:p-8; }
-  .auth-art-mark { @apply font-pixel text-[8px] leading-5; }
-  .auth-art-emoji { @apply hidden text-center text-7xl md:block; }
-  .auth-art h2 { @apply my-3 font-pixel text-xs leading-[2] md:text-sm; }
-  .auth-art p { @apply m-0 text-xl leading-5 text-[#fff0c2]; }
-  .auth-main { @apply max-h-[92vh] overflow-y-auto p-5 sm:p-7; }
-  .auth-top { @apply flex items-start justify-between gap-3; }
-  .auth-top h2 { @apply m-0 font-pixel text-xs leading-6 text-[#293a31]; }
-  .auth-subtitle { @apply mt-2 text-xl text-[#536251]; }
-  .auth-close { @apply grid h-9 w-9 shrink-0 cursor-pointer place-items-center border-2 border-[#304438] bg-[#d3dfb9] font-pixel text-sm text-[#24392d] hover:bg-[#c2d2a4]; }
-  .auth-tabs { @apply my-5 grid grid-cols-2 gap-1 border-2 border-[#304438] bg-[#cbd8b4] p-1; }
-  .auth-tab { @apply cursor-pointer border-2 border-transparent bg-transparent p-2 font-pixel text-[7px] text-[#536251]; }
-  .auth-tab.active { @apply border-[#671324] bg-[#d8213a] text-white shadow-[2px_2px_0_#81152a]; }
-  .auth-panel { @apply hidden; }
-  .auth-panel.active { @apply block; }
-  .auth-field { @apply my-3; }
-  .auth-field label { @apply mb-1.5 block text-xl font-bold text-[#26392f]; }
-  .auth-field input { @apply w-full border-2 border-[#687b61] bg-[#f7f8e9] px-3 py-2 font-display text-2xl text-[#1c2c23] outline-none focus:border-[#bd1c35] focus:ring-2 focus:ring-[#d8213a]/30; }
-  .auth-password { @apply relative flex; }
-  .auth-password input { @apply pr-20; }
-  .auth-show { @apply absolute right-1 top-1/2 -translate-y-1/2 cursor-pointer border-2 border-[#304438] bg-[#d3dfb9] px-2 py-1 text-sm text-[#24392d]; }
-  .auth-options { @apply my-3 flex items-center justify-between gap-3 text-lg; }
-  .auth-check { @apply flex items-start gap-2 text-lg leading-5 text-[#536251]; }
-  .auth-check input { @apply mt-1 accent-[#c6223a]; }
-  .auth-switch { @apply cursor-pointer border-0 bg-transparent p-0 font-bold text-[#b51d35]; }
-  .auth-submit { @apply mt-3; }
-  .auth-feedback { @apply my-2 min-h-5 text-lg font-bold text-[#bd3152]; }
+  .device-bottom { @apply flex items-center justify-between border-t-4 border-[#ffd35a] bg-[#d8213a] px-2 py-2 font-display text-lg font-bold text-[#fff0c2] sm:px-5; }
 }
+</style>
+
+<style>
+.sales-chat { max-width: 760px; margin: 0 auto; border: 4px solid #304438; background: #edf2d8; box-shadow: 6px 6px 0 #83917b; display: flex; flex-direction: column; min-height: 520px; }
+.sales-chat-header { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #d8213a; color: #fff0c2; border-bottom: 4px solid #ffd35a; }
+.sales-chat-avatar { width: 48px; height: 48px; display: grid; place-items: center; border: 3px solid #64101f; background: #f1e7bf; font-size: 26px; }
+.sales-chat-header strong { font-family: 'VT323', monospace; font-size: 22px; display: block; line-height: 1; }
+.sales-chat-status { font-size: 16px; color: #85d87c; }
+.sales-chat-messages { flex: 1; padding: 16px; overflow-y: auto; max-height: 380px; background: #f7f8e9; display: flex; flex-direction: column; gap: 10px; }
+.msg { padding: 8px 12px; border: 2px solid #304438; font-size: 18px; line-height: 1.4; max-width: 85%; word-wrap: break-word; font-family: 'VT323', monospace; }
+.msg.bot { background: #d3dfb9; border-color: #687b61; align-self: flex-start; }
+.msg.user { background: #fff0c2; border-color: #bd1c35; align-self: flex-end; text-align: right; }
+.sales-chat-options { padding: 12px 16px; border-top: 3px solid #83917b; background: #e5edcf; display: flex; flex-wrap: wrap; gap: 8px; }
+.opt-btn { border: 3px solid #671324; background: #d8213a; color: #fff; font-family: 'VT323', monospace; font-size: 18px; font-weight: bold; padding: 8px 14px; cursor: pointer; box-shadow: 3px 3px 0 #81152a; transition: background .15s, transform .1s; }
+.opt-btn:hover { background: #b91c34; }
+.opt-btn:active { transform: translate(1px,1px); box-shadow: none; }
+.opt-btn.alt { background: #d3dfb9; color: #24392d; border-color: #394d3d; box-shadow: 3px 3px 0 #83917b; }
+.opt-btn.alt:hover { background: #c2d2a4; }
+
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; justify-content: center; }
+.tab-btn { border: 3px solid #8a1528; background: #bd1c33; color: #fff0c2; font-family: 'VT323', monospace; font-size: 20px; font-weight: bold; padding: 8px 16px; cursor: pointer; box-shadow: 3px 3px 0 #731123; }
+.tab-btn.active { background: #ffd35a; color: #671324; border-color: #671324; }
+.produto-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+.produto { border: 4px solid #304438; background: #edf2d8; padding: 12px; box-shadow: 4px 4px 0 #83917b; text-align: center; display: flex; flex-direction: column; gap: 6px; }
+.produto img { width: 96px; height: 96px; image-rendering: pixelated; margin: 0 auto; display: block; }
+.produto h3 { font-size: 22px; font-weight: bold; text-transform: capitalize; color: #26392f; margin: 0; }
+.produto .tipos { display: flex; gap: 4px; justify-content: center; flex-wrap: wrap; }
+.tipo { font-size: 12px; padding: 2px 8px; border: 2px solid #304438; text-transform: uppercase; font-family: 'Press Start 2P', monospace; color: #fff; }
+.produto .preco { font-size: 26px; font-weight: bold; color: #b31c34; }
+.produto .preco-kk { font-family: 'VT323', monospace; font-size: 20px; font-weight: bold; color: #168b68; display: block; margin-top: 2px; letter-spacing: 1px; }
+.produto .add-btn { border: 3px solid #671324; background: #d8213a; color: #fff; font-family: 'VT323', monospace; font-size: 18px; font-weight: bold; padding: 6px; cursor: pointer; box-shadow: 2px 2px 0 #81152a; transition: all 0.2s; }
+.produto .add-btn:active { transform: translate(1px,1px); box-shadow: none; }
+.produto .add-btn:disabled { background: #a8a878; border-color: #5b6958; cursor: not-allowed; opacity: 0.7; }
+
+.cart-bar { position: fixed; bottom: 16px; right: 16px; z-index: 900; border: 4px solid #671324; background: #ffd35a; color: #671324; font-family: 'VT323', monospace; font-size: 22px; font-weight: bold; padding: 10px 18px; cursor: pointer; box-shadow: 4px 4px 0 #81152a; }
+.cart-panel { position: fixed; bottom: 80px; right: 16px; z-index: 901; width: 340px; max-width: calc(100vw - 32px); border: 4px solid #304438; background: #edf2d8; box-shadow: 6px 6px 0 #83917b; display: none; flex-direction: column; }
+.cart-panel.open { display: flex; }
+.cart-panel h3 { background: #d8213a; color: #fff0c2; padding: 10px; font-size: 22px; margin: 0; }
+.cart-itens { max-height: 260px; overflow-y: auto; padding: 10px; }
+.cart-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px dashed #83917b; font-size: 18px; }
+.cart-item button { background: transparent; border: none; color: #b31c34; font-size: 20px; cursor: pointer; }
+.cart-total { padding: 10px; font-size: 22px; font-weight: bold; text-align: right; color: #b31c34; }
+.cart-actions { padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+
+/* ESTILO DO BOTÃO DE LOGIN NO TOPO */
+.btn-login-topo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #a8172d;
+  border: 2px solid #731123;
+  color: #fff0c2;
+  font-family: 'VT323', monospace;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 6px 14px;
+  box-shadow: 3px 3px 0 #50101b;
+  text-transform: uppercase;
+  transition: all 0.1s;
+  cursor: pointer;
+}
+.btn-login-topo:hover {
+  background-color: #bd1c33;
+}
+.btn-login-topo:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 #50101b;
+}
+
+/* ESTILO DOS MODAIS */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 2000;
+  display: flex; align-items: center; justify-content: center;
+  background-color: rgba(10, 14, 23, 0.85); backdrop-filter: blur(4px);
+}
+.modal-box {
+  background-color: #dce8c6; border: 4px solid #304438; padding: 24px;
+  width: 100%; max-width: 400px; box-shadow: 8px 8px 0 #111;
+}
+.modal-input {
+  width: 100%; border: 3px solid #687b61; background-color: #f7f8e9;
+  padding: 10px; font-family: 'VT323', monospace; font-size: 24px;
+  color: #1c2c23; outline: none; margin-bottom: 16px;
+}
+.modal-input:focus { border-color: #d8213a; }
+
+/* ESTILO DOS CHECKBOX DE PAGAMENTO */
+.pay-option {
+  display: flex; align-items: center; gap: 10px;
+  background-color: #edf2d8; border: 3px solid #687b61;
+  padding: 10px; cursor: pointer; margin-bottom: 10px;
+  font-family: 'VT323', monospace; font-size: 22px; font-weight: bold; color: #26392f;
+  transition: all 0.2s;
+}
+.pay-option input[type="radio"] {
+  width: 20px; height: 20px; accent-color: #d8213a; cursor: pointer;
+}
+.pay-option:hover { background-color: #c2d2a4; }
+.pay-option.selected {
+  background-color: #ffd35a;
+  border-color: #671324;
+  box-shadow: 2px 2px 0 #671324;
+}
+
+/* BOTÃO DE CURTIR */
+.btn-curtir {
+  display: inline-flex; align-items: center; gap: 6px;
+  background-color: #d8213a; border: 3px solid #731123;
+  color: #fff0c2; font-family: 'VT323', monospace; font-size: 20px;
+  font-weight: bold; padding: 6px 14px; cursor: pointer;
+  box-shadow: 3px 3px 0 #50101b; transition: all 0.1s;
+}
+.btn-curtir:hover { background-color: #b91c34; }
+.btn-curtir:active { transform: translate(1px,1px); box-shadow: none; }
+.btn-curtir.curtido { background-color: #168b68; border-color: #0e5e46; box-shadow: 3px 3px 0 #0e5e46; cursor: default; }
 </style>
 </head>
 
 <body>
 <div class="pokedex-device">
-  <div class="device-chrome" aria-hidden="true">
+  <div class="device-chrome">
     <div class="device-indicators"><span class="device-led device-led-main"></span><span class="device-led device-led-red"></span><span class="device-led device-led-green"></span></div>
-    <span>IDLEDEX · TRAINER CONSOLE</span>
-    <span class="hidden sm:inline">SYSTEM READY</span>
+    <span>BAIANO STORE · TMS · SILVER · POKÉMON</span>
+    <span class="hidden sm:inline">ONLINE</span>
   </div>
 
 <header class="site-header">
   <nav class="site-container site-nav">
-    <a class="brand-mark" href="#inicio" aria-label="IdleDex Academy - início"><span class="brand-icon">⚡</span><span><span class="brand-name">IdleDex</span><span class="brand-caption">ACADEMY</span></span></a>
-    <div class="nav-menu">
-      <a class="nav-link" href="#cursos">Aprender</a>
-      <a class="nav-link" href="#rmt">Mentoria RMT</a>
-      <a class="nav-link" href="#pvp">PvP</a>
-      <a class="nav-link" href="#guia">Guia</a>
+    <a class="brand-mark" href="#inicio">
+      <span class="brand-icon">🛒</span>
+      <span><span class="brand-name">Baiano Store</span><span class="brand-caption">TMS · SILVER · POKÉMON</span></span>
+    </a>
+    <div class="nav-menu flex items-center gap-2">
+      <a class="nav-link" href="#chat">Atendimento</a>
+      <a class="nav-link" href="#catalogo">Catálogo</a>
       
-      <!-- BOTÃO ENTRAR -->
-      <button class="header-login" type="button" onclick="verificarLogin()">👤 Entrar</button>
-      
-      <!-- BOTÃO SAIR -->
-      <button class="header-login bg-red-700 text-white hover:bg-red-800 hidden" type="button" id="btnSair" onclick="fazerLogout()">Sair</button>
+      <!-- BOTÃO DE CURTIR -->
+      <button class="btn-curtir" id="btnCurtir" onclick="curtirSite()">
+        ❤️ <span id="curtidasCount">0</span> Curtir
+      </button>
+
+      <!-- BOTÃO DE LOGIN ADMIN -->
+      <button class="btn-login-topo" onclick="abrirModalAdmin()">👤 Entrar</button>
     </div>
   </nav>
 </header>
 
 <main>
-
-<div class="hero" id="inicio">
-  <img class="hero-bg" src="idle-dex-ash-pikachu-red.png" alt="" aria-hidden="true">
-  <span class="tag">APRENDA COM A IDLEDEX ACADEMY</span>
-  <h1 class="hero-title">Evolua no IdleDex com estratégia.<br><span>Aprenda. Planeje. Conquiste seus objetivos.</span></h1>
-  <p class="hero-copy">Explore estratégias de farm e negociação no RMT, avalie Pokémon para revenda e desenvolva equipes de PvP com orientação prática e personalizada. O conteúdo ajuda você a tomar decisões mais conscientes dentro do jogo — sem promessa de resultados financeiros.</p>
-  <a href="#rmt" class="btn btn-auto">Ver opções de mentoria</a>
-</div>
-
-<section class="section-space" id="cursos">
-  <div class="site-container">
-    <div class="section-title">
-      <span class="tag">O QUE VOCÊ VAI APRENDER</span>
-      <h2>Estratégias para cada etapa da sua jornada</h2>
-      <p>Aprenda no seu ritmo: do início da sua jornada até decisões mais avançadas de farm, negociação e PvP.</p>
-    </div>
-    <div class="two-column-grid">
-      <div class="card"><div class="course-icon">💎</div><h3>Farm de itens lucrativos</h3><p>Aprenda quais itens valem a pena farmar, como avaliar a procura no mercado e quais atividades priorizar para aproveitar melhor seu tempo.</p></div>
-      <div class="card"><div class="course-icon">🎯</div><h3>Captura de Pokémon para revenda</h3><p>Descubra quais Pokémon capturar, como analisar IVs, Nature, raridade, utilidade e potencial de venda.</p></div>
-      <div class="card"><div class="course-icon">💰</div><h3>Seus primeiros R$ 100 no RMT</h3><p>Estratégias para buscar suas primeiras vendas, organizar recursos, definir preços e negociar com compradores.</p></div>
-      <div class="card"><div class="course-icon">🚀</div><h3>Vendas online profissionais</h3><p>Aprenda a criar anúncios, atender clientes, negociar, organizar sua loja e desenvolver uma rotina de vendas mais eficiente.</p></div>
-    </div>
+  <!-- HERO -->
+  <div class="hero" id="inicio">
+    <img class="hero-bg" src="idle-dex-ash-pikachu-red.png" alt="" aria-hidden="true">
+    <span class="tag">LOJA DE TMS · SILVER · POKÉMON</span>
+    <h1 class="hero-title">Bem-vindo à Baiano Store<br><span>Compre TMs, Silver e Pokémon com o Baiano</span></h1>
+    <p style="font-size:22px; color:#e1ebcc; max-width:640px; margin:0 auto 16px;">
+      Converse comigo, escolha o que precisa e receba o preço na hora. Entrega rápida e segura.
+    </p>
   </div>
-</section>
 
-<section class="section-space" id="rmt">
-  <div class="site-container">
-    <div class="section-title">
-      <span class="tag">MENTORIA RMT</span>
-      <h2>Construa sua estratégia de vendas no IdleDex</h2>
-      <p>Receba orientação para organizar seu farm, identificar oportunidades de revenda e aprimorar sua abordagem de vendas no RMT.</p>
-    </div>
-    <div class="course-grid">
-      <div class="card">
-        <h3>🌱 1 dia</h3><div class="price">R$ 5</div><p>Acesso por 24 horas</p>
-        <ul><li>Mentoria direta</li><li>Farm de itens</li><li>Captura para revenda</li><li>Estratégias de vendas</li></ul>
-        <button class="btn" onclick="irParaCheckout('Mentoria RMT - 1 dia', 'R$ 5')">Falar sobre este plano</button>
+  <!-- CHAT DE VENDAS -->
+  <section class="section-space" id="chat">
+    <div class="site-container">
+      <div class="section-title" style="text-align:center; margin-bottom:16px;">
+        <span class="tag">ATENDIMENTO DIRETO</span>
+        <h2>Fale com o Baiano</h2>
       </div>
-      <div class="card">
-        <h3>📅 1 semana</h3><div class="price">R$ 15</div><p>Acesso por 7 dias</p>
-        <ul><li>Mentoria direta</li><li>Farm de itens</li><li>Captura para revenda</li><li>Estratégias de vendas</li></ul>
-        <button class="btn" onclick="irParaCheckout('Mentoria RMT - 1 semana', 'R$ 15')">Falar sobre este plano</button>
-      </div>
-      <div class="card">
-        <h3>⭐ 1 mês</h3><div class="price">R$ 50</div><p>Acesso por 30 dias</p>
-        <ul><li>Mentoria direta</li><li>Farm de itens</li><li>Captura para revenda</li><li>Estratégias de vendas</li></ul>
-        <button class="btn" onclick="irParaCheckout('Mentoria RMT - 1 mês', 'R$ 50')">Falar sobre este plano</button>
-      </div>
-      <div class="card featured">
-        <span class="popular">🔥 POPULAR</span>
-        <h3>♾️ Vitalício</h3><div class="price">R$ 150</div><p>Pagamento único</p>
-        <ul><li>Todos os conteúdos RMT</li><li>Mentoria diretamente comigo</li><li>Estratégias de farm e vendas</li><li>Enquanto o jogo estiver online</li></ul>
-        <button class="btn" onclick="irParaCheckout('Mentoria RMT - Vitalício', 'R$ 150')">Falar sobre este plano</button>
-      </div>
-    </div>
-    <p class="note">Todos os planos RMT incluem os cursos de farm, revenda e vendas online. Resultados financeiros dependem da prática e não são garantidos.</p>
-  </div>
-</section>
-
-<section class="section-space" id="guia">
-  <div class="site-container">
-    <div class="highlight">
-      <div class="two-column-grid items-center">
-        <div>
-          <span class="tag">GUIA EXCLUSIVO</span>
-          <h2>📘 Do zero ao mercado RMT</h2>
-          <p>Um passo a passo para começar no IdleDex com mais clareza, aproveitar melhor seus recursos e preparar sua evolução no jogo.</p>
-          <ul class="leading-8">
-            <li>Resgate de bônus iniciais</li><li>Hyper Potions e Revives</li><li>Configuração do Auto</li><li>Economia de Silver</li>
-            <li>Estratégia com Scyther e Scizor</li><li>Progressão pelos ginásios</li><li>Uso inteligente do mercado</li><li>Organização de itens para revenda</li>
-          </ul>
+      <div class="sales-chat">
+        <div class="sales-chat-header">
+          <div class="sales-chat-avatar">🧢</div>
+          <div>
+            <strong>Baiano Store</strong>
+            <span class="sales-chat-status">● Online agora</span>
+          </div>
         </div>
-        <div class="card">
-          <span class="tag">MATERIAL AVULSO</span>
-          <h3>Guia para Iniciantes</h3>
-          <div class="price">R$ 25</div>
-          <p>Pagamento único. Material de aprendizado para começar uma conta com foco em vendas.</p>
-          <ul><li>Estratégia do zero</li><li>Economia de recursos</li><li>Progressão no jogo</li><li>Preparação para o RMT</li></ul>
-          <button class="btn" onclick="irParaCheckout('Guia para Iniciantes', 'R$ 25')">Quero saber mais sobre o guia</button>
-          <p class="note">Produto separado, sem mentoria individual.</p>
-        </div>
+        <div class="sales-chat-messages" id="salesMessages"></div>
+        <div class="sales-chat-options" id="salesOptions"></div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="section-space" id="pvp">
-  <div class="site-container">
-    <div class="section-title">
-      <span class="tag">MENTORIA PVP</span>
-      <h2>⚔️ PvP no IdleDex: evolua sua estratégia</h2>
-      <p>Aprenda a montar equipes mais equilibradas, entender sinergias e adaptar suas táticas usando os Pokémon que você já tem.</p>
-    </div>
-    <div class="two-column-grid">
-      <div class="card"><div class="course-icon">🌱</div><h3>Nível Iniciante</h3><p>Fundamentos do PvP, tipos, vantagens, fraquezas, primeiros times e escolhas de Pokémon.</p></div>
-      <div class="card"><div class="course-icon">⚡</div><h3>Nível Intermediário</h3><p>Análise de IVs, Nature, golpes, cobertura, funções de equipe e estratégias para enfrentar adversários mais fortes.</p></div>
-      <div class="card"><div class="course-icon">🏆</div><h3>Nível Avançado</h3><p>Construção de equipes competitivas, combinações de golpes, estratégias elaboradas e adaptação contra diferentes estilos de adversários.</p></div>
-      <div class="card"><div class="course-icon">🤝</div><h3>Acompanhamento personalizado</h3><p>Analisaremos os Pokémon que você já tem, identificando oportunidades de melhoria e criando táticas de acordo com seu nível e seus objetivos.</p></div>
-    </div>
-    <div class="section-title mt-12">
-      <h2>Escolha sua mentoria PvP</h2>
-      <p>Orientação direta para jogadores iniciantes, intermediários e avançados.</p>
-    </div>
-    <div class="two-column-grid">
-      <div class="card">
-        <h3>⚔️ Mentoria PvP Mensal</h3><div class="price">R$ 30</div><p>30 dias de acompanhamento</p>
-        <ul><li>Análise dos seus Pokémon</li><li>Montagem de equipes PvP</li><li>Estratégias personalizadas</li><li>Orientação para todos os níveis</li></ul>
-        <button class="btn" onclick="irParaCheckout('Mentoria PvP - Mensal', 'R$ 30')">Falar sobre este plano</button>
+  <!-- CATÁLOGO -->
+  <section class="section-space" id="catalogo">
+    <div class="site-container">
+      <div class="section-title" style="text-align:center;">
+        <span class="tag">CATÁLOGO</span>
+        <h2>O que você quer comprar?</h2>
+        <p>Confira o estoque em tempo real</p>
       </div>
-      <div class="card featured">
-        <span class="popular">ACESSO VITALÍCIO</span>
-        <h3>♾️ Mentoria PvP Vitalícia</h3><div class="price">R$ 200</div><p>Pagamento único</p>
-        <ul><li>Todos os níveis de PvP</li><li>Mentoria direta</li><li>Construção de times</li><li>Táticas avançadas</li><li>Enquanto o IdleDex estiver online</li></ul>
-        <button class="btn" onclick="irParaCheckout('Mentoria PvP - Vitalício', 'R$ 200')">Falar sobre este plano</button>
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="tm" onclick="trocarAba('tm')">⚡ TMs</button>
+        <button class="tab-btn" data-tab="silver" onclick="trocarAba('silver')">💰 Silver</button>
+        <button class="tab-btn" data-tab="pokemon" onclick="trocarAba('pokemon')">🎮 Pokémon</button>
+      </div>
+      <div class="produto-grid" id="produtoGrid">
+        <!-- O JS vai injetar os produtos aqui -->
+      </div>
+      <p style="text-align:center; margin-top:16px; color:#5b6958; font-size:18px;" id="catalogoStatus">Carregando catálogo...</p>
+    </div>
+  </section>
+
+  <!-- COMO COMPRAR -->
+  <section class="section-space" id="como">
+    <div class="site-container">
+      <div class="section-title" style="text-align:center;">
+        <span class="tag">PASSO A PASSO</span>
+        <h2>Como comprar</h2>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px;">
+        <div class="card"><h3 style="font-size:24px;">1️⃣ Escolha</h3><p style="font-size:20px;">Selecione TMs, Silver ou Pokémon no catálogo.</p></div>
+        <div class="card"><h3 style="font-size:24px;">2️⃣ Carrinho</h3><p style="font-size:20px;">Adicione ao carrinho e confira o total.</p></div>
+        <div class="card"><h3 style="font-size:24px;">3️⃣ WhatsApp</h3><p style="font-size:20px;">Envie o pedido pronto pro Baiano finalizar.</p></div>
+        <div class="card"><h3 style="font-size:24px;">4️⃣ Entrega</h3><p style="font-size:20px;">Receba no jogo com segurança.</p></div>
       </div>
     </div>
-  </div>
-</section>
-
-<section class="section-space">
-  <div class="site-container">
-    <div class="section-title">
-      <h2>Como funciona o atendimento?</h2>
-      <p>Escolha uma opção e fale comigo pelo WhatsApp para tirar dúvidas e receber as instruções de pagamento.</p>
-    </div>
-    <div class="steps">
-      <div class="card"><span class="step-number">1</span><h3>Escolha seu produto</h3><p>Selecione o guia ou a mentoria que melhor atende ao seu objetivo.</p></div>
-      <div class="card"><span class="step-number">2</span><h3>Chame pelo WhatsApp</h3><p>O WhatsApp abrirá com uma mensagem pronta sobre o produto escolhido. Você pode editar e enviar quando quiser.</p></div>
-      <div class="card"><span class="step-number">3</span><h3>Receba atendimento</h3><p>Tire suas dúvidas e receba os detalhes para concluir a compra com segurança.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="section-space faq">
-  <div class="site-container">
-    <div class="section-title"><h2>Perguntas frequentes</h2></div>
-    <details><summary>Preciso ter experiência no IdleDex?</summary><p>Não. Existem conteúdos para iniciantes e jogadores mais experientes.</p></details>
-    <details><summary>Todos os planos RMT incluem os cursos?</summary><p>Sim. Todos incluem os conteúdos de farm, captura para revenda e vendas online. O que muda é o período da mentoria.</p></details>
-    <details><summary>O guia de R$ 25 inclui mentoria?</summary><p>Não. O guia é um material avulso. O acompanhamento individual está disponível nos planos de mentoria.</p></details>
-    <details><summary>O plano vitalício dura quanto tempo?</summary><p>A mentoria vitalícia permanece disponível enquanto o IdleDex continuar online, sem prazo fixo de encerramento.</p></details>
-    <details><summary>Vou ganhar R$ 100 com certeza?</summary><p>Não. O objetivo é ensinar estratégias para buscar resultados. Os ganhos dependem da dedicação, do mercado e das oportunidades disponíveis.</p></details>
-    <details><summary>Como faço o pagamento?</summary><p>Após preencher seus dados, você será direcionado ao WhatsApp. O link de pagamento será enviado após o atendimento.</p></details>
-  </div>
-</section>
-
+  </section>
 </main>
 
 <footer class="site-footer">
-  <strong>🎮 IdleDex Academy</strong>
-  <p>Mentorias RMT, PvP e guias para jogadores.</p>
-  <p>Serviço independente. Não representa a administração oficial do IdleDex.</p>
-  <p>Verifique as regras do jogo e das plataformas antes de realizar transações de RMT.</p>
+  <strong>🛒 Baiano Store</strong>
+  <p>TMs · Silver · Pokémon no IdleDex</p>
+  <p>Loja independente. Não representa a administração oficial do IdleDex.</p>
+  
+  <div class="mt-4 pt-4 border-t border-dashed border-[#4a5d4e] text-sm text-[#aab995]">
+    👁️ <span id="visitasCount">0</span> visitas no site
+  </div>
 </footer>
-  <div class="device-bottom" aria-hidden="true"><span>POKÉDEX TRAINING SYSTEM</span><span class="device-speaker"><i></i><i></i><i></i><i></i><i></i></span><span>V.01 · IDLEDEX</span></div>
+
+<div class="device-bottom">
+  <span>BAIANO STORE SYSTEM</span>
+  <span>V.01</span>
+</div>
 </div>
 
-<!-- MODAL DE LOGIN/CADASTRO CLIENTE -->
-<div class="auth-overlay" id="authOverlay" role="dialog" aria-modal="true" aria-labelledby="authTitle" onclick="fecharLoginFora(event)">
-  <div class="auth-card">
-    <aside class="auth-art">
-      <div class="auth-art-mark">🎮 IDLEDEX ACADEMY</div>
-      <div class="auth-art-emoji" aria-hidden="true">✨</div>
-      <div><h2>Que bom ter você por aqui!</h2><p>Acesse sua área de jogador e acompanhe sua jornada de aprendizado.</p></div>
-    </aside>
-    <div class="auth-main">
-      <div class="auth-top">
-        <div><h2 id="authTitle">Área do cliente</h2><p class="auth-subtitle" id="authSubtitle">Entre para continuar sua jornada.</p></div>
-        <button class="auth-close" type="button" aria-label="Fechar" onclick="fecharLogin()">×</button>
-      </div>
-      <div class="auth-tabs" role="tablist" aria-label="Acesso à conta">
-        <button class="auth-tab active" id="tabLogin" type="button" role="tab" aria-selected="true" onclick="mostrarAuth('login')">Entrar</button>
-        <button class="auth-tab" id="tabCadastro" type="button" role="tab" aria-selected="false" onclick="mostrarAuth('cadastro')">Criar conta</button>
-      </div>
-      <form class="auth-panel active" id="painelLogin" onsubmit="fazerLogin(event)">
-        <div class="auth-field"><label for="loginNick">Nickname</label><input id="loginNick" type="text" autocomplete="username" placeholder="Seu nome de jogador" required maxlength="40"></div>
-        <div class="auth-field"><label for="loginSenha">Senha de 4 dígitos</label><div class="auth-password"><input id="loginSenha" type="password" autocomplete="current-password" placeholder="••••" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" minlength="4" required><button class="auth-show" type="button" onclick="alternarSenha('loginSenha',this)">Mostrar</button></div></div>
-        <div class="auth-options"><label class="auth-check"><input type="checkbox"> Manter conectado</label><button class="auth-switch" type="button" onclick="mensagemDemo('Recuperação de senha ainda não está disponível.')">Esqueci minha senha</button></div>
-        <button class="btn auth-submit" type="submit">Entrar na minha conta</button>
-        <p class="auth-feedback" aria-live="polite"></p>
-        
-        <!-- BOTÕES DE CADASTRO E ADMIN -->
-        <div class="flex flex-col gap-2 mt-4">
-          <p class="auth-options justify-center">Ainda não tem uma conta? <button class="auth-switch" type="button" onclick="mostrarAuth('cadastro')">Cadastre-se</button></p>
-          
-          <button class="btn btn-outline w-full text-lg" type="button" onclick="abrirAdmin()" style="border-color: #304438; color: #26392f; background-color: #d3dfb9;">
-            🛠️ Acessar Painel Admin
-          </button>
-        </div>
-      </form>
-      <form class="auth-panel" id="painelCadastro" onsubmit="fazerCadastro(event)">
-        <div class="auth-field"><label for="cadJogador">Nickname no IdleDex</label><input id="cadJogador" type="text" autocomplete="username" placeholder="Escolha seu nome de jogador" required maxlength="40"></div>
-        <div class="auth-field"><label for="cadEmail">E-mail <span class="font-normal text-quiet">(opcional)</span></label><input id="cadEmail" type="email" autocomplete="email" placeholder="voce@email.com"></div>
-        <div class="auth-field"><label for="cadWhats">WhatsApp <span class="font-normal text-quiet">(opcional)</span></label><input id="cadWhats" type="tel" autocomplete="tel" inputmode="tel" placeholder="(DDD) 9 0000-0000"></div>
-        <div class="auth-field"><label for="cadSenha">Crie uma senha de 4 dígitos</label><div class="auth-password"><input id="cadSenha" type="password" autocomplete="new-password" placeholder="••••" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" minlength="4" required><button class="auth-show" type="button" onclick="alternarSenha('cadSenha',this)">Mostrar</button></div></div>
-        <div class="auth-field"><label for="cadConfirmaSenha">Confirme os 4 dígitos</label><div class="auth-password"><input id="cadConfirmaSenha" type="password" autocomplete="new-password" placeholder="Digite novamente" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" minlength="4" required><button class="auth-show" type="button" onclick="alternarSenha('cadConfirmaSenha',this)">Mostrar</button></div></div>
-        <label class="auth-check"><input id="aceiteCadastro" type="checkbox" required> Li e aceito os termos e a política de privacidade.</label>
-        <button class="btn auth-submit" type="submit">Criar minha conta</button>
-        <p class="auth-feedback" aria-live="polite"></p>
-      </form>
-    </div>
+<!-- CARRINHO FLUTUANTE -->
+<button class="cart-bar" onclick="toggleCart()">🛒 <span id="cartCount">0</span> · R$ <span id="cartTotal">0</span></button>
+<div class="cart-panel" id="cartPanel">
+  <h3>🛒 Seu carrinho</h3>
+  <div class="cart-itens" id="cartItens"><p style="text-align:center; color:#5b6958;">Carrinho vazio</p></div>
+  <div class="cart-total">Total: R$ <span id="cartTotal2">0</span></div>
+  <div class="cart-actions">
+    <button class="opt-btn" onclick="abrirModalCompra()">📱 Finalizar no WhatsApp</button>
+    <button class="opt-btn alt" onclick="limparCarrinho()">🗑️ Limpar</button>
   </div>
 </div>
 
 <!-- MODAL DE LOGIN ADMIN -->
-<div class="auth-overlay" id="adminOverlay" role="dialog" aria-modal="true" aria-labelledby="adminTitle" onclick="fecharAdminFora(event)">
-  <div class="auth-card" style="max-width: 450px; display: flex; flex-direction: column;">
-    <div class="auth-main p-8">
-      <div class="auth-top mb-4">
-        <h2 class="font-pixel text-sm text-[#293a31]" id="adminTitle">ÁREA ADMINISTRATIVA</h2>
-        <button class="auth-close" type="button" aria-label="Fechar" onclick="fecharAdmin()">×</button>
-      </div>
-      <form id="formAdminLogin" onsubmit="entrarComoAdmin(event)">
-        <div class="auth-field">
-          <label for="adminNick">Nickname do Administrador</label>
-          <input id="adminNick" type="text" placeholder="Ex: MasterAdmin" required maxlength="30">
-        </div>
-        <div class="auth-field">
-          <label for="adminSenha">Senha de Administrador</label>
-          <div class="auth-password">
-            <input id="adminSenha" type="password" placeholder="••••" required maxlength="20">
-            <button class="auth-show" type="button" onclick="alternarSenha('adminSenha',this)">Mostrar</button>
-          </div>
-        </div>
-        <button class="btn auth-submit mt-4" type="submit">Entrar no Painel</button>
-      </form>
+<div class="modal-overlay hidden" id="modalAdmin" style="display: none;">
+  <div class="modal-box">
+    <div class="text-center mb-6">
+      <span class="text-5xl block mb-2">🔐</span>
+      <h2 class="font-pixel text-sm text-[#293a31]">ACESSO ADMINISTRATIVO</h2>
     </div>
+
+    <label class="block text-xl font-bold text-[#26392f] mb-1">Nickname</label>
+    <input type="text" id="adminNick" class="modal-input" placeholder="Ex: baiano" onkeydown="if(event.key==='Enter') processarLoginAdmin()">
+
+    <label class="block text-xl font-bold text-[#26392f] mb-1">Senha</label>
+    <input type="password" id="adminSenha" class="modal-input" placeholder="Sua senha" onkeydown="if(event.key==='Enter') processarLoginAdmin()">
+
+    <p class="text-lg font-bold text-red-600 mb-2 hidden" id="adminErro">Nick ou senha incorretos!</p>
+
+    <button class="opt-btn w-full py-3 mb-2" onclick="processarLoginAdmin()">Entrar no Painel</button>
+    <button class="opt-btn alt w-full" onclick="fecharModalAdmin()">Cancelar</button>
   </div>
 </div>
 
-<!-- MODAL DE TROCA DE SENHA (OBRIGATÓRIO) -->
-<div class="auth-overlay" id="modalTrocarSenha" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
-  <div class="auth-card" style="max-width: 450px; display: flex; flex-direction: column; border-color: #d97706; box-shadow: 0 0 30px rgba(217, 119, 6, 0.5);">
-    <div class="auth-main p-8">
-      <div class="auth-top mb-4">
-        <h2 class="font-pixel text-sm text-[#d97706]" id="adminTitle">⚠️ TROCA OBRIGATÓRIA</h2>
-      </div>
-      <p class="text-xl text-[#26392f] mb-4">Você está usando a senha padrão <strong>0000</strong>. Por segurança, você deve criar uma nova senha para continuar.</p>
-      
-      <form onsubmit="salvarNovaSenha(event)">
-        <div class="auth-field">
-          <label for="novaSenhaAdmin">Nova Senha (mínimo 4 dígitos)</label>
-          <div class="auth-password">
-            <input id="novaSenhaAdmin" type="password" placeholder="••••" required minlength="4" maxlength="20">
-            <button class="auth-show" type="button" onclick="alternarSenha('novaSenhaAdmin',this)">Mostrar</button>
-          </div>
-        </div>
-        <div class="auth-field">
-          <label for="confirmaNovaSenhaAdmin">Confirme a Nova Senha</label>
-          <div class="auth-password">
-            <input id="confirmaNovaSenhaAdmin" type="password" placeholder="••••" required minlength="4" maxlength="20">
-            <button class="auth-show" type="button" onclick="alternarSenha('confirmaNovaSenhaAdmin',this)">Mostrar</button>
-          </div>
-        </div>
-        <button class="btn auth-submit mt-4" type="submit" style="background-color: #d97706; border-color: #92400e;">Salvar Nova Senha</button>
-      </form>
+<!-- MODAL DE NICK DO CLIENTE E PAGAMENTO -->
+<div class="modal-overlay hidden" id="modalCompra" style="display: none;">
+  <div class="modal-box">
+    <div class="text-center mb-4">
+      <span class="text-5xl block mb-2">🎮</span>
+      <h2 class="font-pixel text-sm text-[#293a31]">FINALIZAR PEDIDO</h2>
     </div>
-  </div>
-</div>
 
-<!-- BOTÃO DE CHAT SUPORTE AO VIVO -->
-<button class="chat-toggle" type="button" onclick="alternarChat()" aria-label="Abrir chat de suporte ao vivo">💬</button>
+    <label class="block text-xl font-bold text-[#26392f] mb-1">Seu Nick no Jogo:</label>
+    <input type="text" id="nickCliente" class="modal-input" placeholder="Ex: AshKetchum" onkeydown="if(event.key==='Enter') confirmarCompra()">
 
-<!-- PAINEL DO CHAT -->
-<div class="chat-panel" id="chatPanel">
-  <div class="chat-header">
-    <span>💬 Suporte ao vivo</span>
-    <button class="chat-fechar" type="button" onclick="alternarChat()" aria-label="Fechar chat">×</button>
-  </div>
-  <div class="chat-mensagens" id="chatMensagens">
-    <!-- Preenchido via JS -->
-  </div>
-  <div class="chat-form">
-    <div class="chat-campo">
-      <label for="chatNick">Nickname:</label>
-      <input id="chatNick" type="text" placeholder="Seu nick" maxlength="30" required>
-    </div>
-    <div class="chat-campo">
-      <label for="chatTexto">Mensagem:</label>
-      <input id="chatTexto" type="text" placeholder="Digite sua mensagem..." maxlength="200" required>
-    </div>
-    <button class="chat-enviar" type="button" onclick="enviarMensagemChat()">Enviar</button>
+    <label class="block text-xl font-bold text-[#26392f] mb-2 mt-4">Forma de Pagamento:</label>
+    
+    <label class="pay-option selected" id="opt-pix" onclick="selecionarPagamento('PIX')">
+      <input type="radio" name="pagamento" value="PIX" checked>
+      💵 PIX (Dinheiro)
+    </label>
+    
+    <label class="pay-option" id="opt-silver" onclick="selecionarPagamento('Silver (kk)')">
+      <input type="radio" name="pagamento" value="Silver (kk)">
+      💰 Silver no Jogo (kk)
+    </label>
+
+    <button class="opt-btn w-full py-3 mt-4 mb-2" onclick="confirmarCompra()">Enviar Pedido</button>
+    <button class="opt-btn alt w-full" onclick="fecharModalCompra()">Cancelar</button>
   </div>
 </div>
 
@@ -431,111 +356,124 @@ tailwind.config = { theme: { extend: { colors: {
 // ==========================================
 const SUPABASE_URL = 'https://tkrbfimaobuxxrvmkexv.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_7iBYHmIK02nPEgdAVSOK6A_c32QH0rK';
-let supabaseClient = null;
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-if (window.supabase) {
-  supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-} else {
-  console.error("Erro: Biblioteca do Supabase não carregou.");
+// ==========================================
+// SISTEMA DE VISITAS E CURTIDAS
+// ==========================================
+async function registrarVisita() {
+  if (!sessionStorage.getItem('baiano_visitou')) {
+    sessionStorage.setItem('baiano_visitou', 'true');
+    await supabaseClient.rpc('somar_visita');
+  }
+  await carregarEstatisticas();
 }
 
-let CLIENTE_LOGADO = localStorage.getItem('idledex_cliente_nick');
-let planoEscolhidoNoIndex = null;
-let adminTrocandoSenha = null; // Guarda o nick do admin que está trocando a senha
+async function curtirSite() {
+  var btn = document.getElementById('btnCurtir');
+  
+  if (localStorage.getItem('baiano_curtiu')) {
+    alert("Você já curtiu a loja! Obrigado pelo carinho! ❤️");
+    return;
+  }
 
-// --- INICIALIZAÇÃO ---
-document.addEventListener('DOMContentLoaded', () => {
-  atualizarBotaoSair();
-  preencherChatNick();
-  carregarChatCliente();
-  setInterval(carregarChatCliente, 3000);
-});
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Curtindo...';
 
-function atualizarBotaoSair() {
-  const btnSair = document.getElementById('btnSair');
-  if (CLIENTE_LOGADO) {
-    btnSair.classList.remove('hidden');
+  // Soma no banco
+  const { error } = await supabaseClient.rpc('somar_curtida');
+  
+  if (error) {
+    console.error("Erro ao curtir:", error);
+    alert("Erro ao curtir. Tente novamente.");
+    btn.disabled = false;
+    btn.innerHTML = '❤️ Curtir';
+    return;
+  }
+  
+  localStorage.setItem('baiano_curtiu', 'true');
+  
+  // Força a busca dos dados atualizados
+  await carregarEstatisticas();
+}
+
+async function carregarEstatisticas() {
+  const { data, error } = await supabaseClient
+    .from('estatisticas')
+    .select('visitas, curtidas')
+    .eq('id', 1)
+    .single();
+
+  if (error) {
+    console.error("Erro ao ler estatísticas:", error);
+    return;
+  }
+  
+  if (!data) {
+    console.log("Nenhum dado encontrado na tabela.");
+    return;
+  }
+
+  document.getElementById('visitasCount').textContent = data.visitas;
+  
+  var btn = document.getElementById('btnCurtir');
+  var jaCurtiu = localStorage.getItem('baiano_curtiu');
+  
+  if (jaCurtiu) {
+    btn.classList.add('curtido');
+    btn.innerHTML = '❤️ ' + data.curtidas + ' Curtidas';
   } else {
-    btnSair.classList.add('hidden');
+    btn.classList.remove('curtido');
+    btn.innerHTML = '❤️ ' + data.curtidas + ' Curtir';
   }
 }
 
-function fazerLogout() {
-  localStorage.removeItem('idledex_cliente_nick');
-  CLIENTE_LOGADO = null;
-  window.location.href = 'index.html';
-}
+// ==========================================
+// CONTROLE DE PAGAMENTO (PIX / SILVER)
+// ==========================================
+var metodoPagamentoSelecionado = 'PIX';
 
-// --- VERIFICAÇÃO DO BOTÃO ENTRAR ---
-function verificarLogin() {
-  if (CLIENTE_LOGADO) {
-    window.location.href = 'painel.html';
+function selecionarPagamento(metodo) {
+  metodoPagamentoSelecionado = metodo;
+  
+  document.getElementById('opt-pix').classList.remove('selected');
+  document.getElementById('opt-silver').classList.remove('selected');
+  
+  if (metodo === 'PIX') {
+    document.getElementById('opt-pix').classList.add('selected');
+    document.querySelector('input[value="PIX"]').checked = true;
   } else {
-    abrirLogin();
+    document.getElementById('opt-silver').classList.add('selected');
+    document.querySelector('input[value="Silver (kk)"]').checked = true;
   }
 }
 
-// --- AÇÕES DE COMPRA ---
-function irParaCheckout(plano, valor) {
-  planoEscolhidoNoIndex = { plano, valor };
-  if (!CLIENTE_LOGADO) {
-    alert("Você precisa entrar ou criar uma conta para solicitar a mentoria.");
-    abrirLogin();
-  } else {
-    localStorage.setItem('idledex_plano_pendente', JSON.stringify(planoEscolhidoNoIndex));
-    window.location.href = 'painel.html';
-  }
+// ==========================================
+// MODAIS DE LOGIN ADMIN
+// ==========================================
+function abrirModalAdmin() {
+  document.getElementById('modalAdmin').classList.remove('hidden');
+  document.getElementById('modalAdmin').style.display = 'flex';
+  document.getElementById('adminNick').focus();
 }
 
-// --- MODAL DE LOGIN/CADASTRO CLIENTE ---
-function abrirLogin() { 
-  document.getElementById('authOverlay').classList.add('open'); 
-  document.body.style.overflow='hidden'; 
-}
-function fecharLogin() { document.getElementById('authOverlay').classList.remove('open'); document.body.style.overflow=''; }
-function fecharLoginFora(event) { if (event.target.id === 'authOverlay') fecharLogin(); }
-function mostrarAuth(tipo) {
-  const cadastro = tipo === 'cadastro';
-  document.getElementById('painelLogin').classList.toggle('active', !cadastro);
-  document.getElementById('painelCadastro').classList.toggle('active', cadastro);
-  document.getElementById('tabLogin').classList.toggle('active', !cadastro);
-  document.getElementById('tabCadastro').classList.toggle('active', cadastro);
-  document.getElementById('authSubtitle').textContent = cadastro ? 'Preencha seus dados para começar.' : 'Entre para continuar sua jornada.';
-}
-function alternarSenha(id, botao) {
-  const campo = document.getElementById(id); const visivel = campo.type === 'password';
-  campo.type = visivel ? 'text' : 'password'; botao.textContent = visivel ? 'Ocultar' : 'Mostrar';
-}
-function mensagemDemo(texto) { document.querySelector('#painelLogin .auth-feedback').textContent = texto; }
-document.addEventListener('keydown', event => { 
-  if (event.key === 'Escape') {
-    fecharLogin();
-    fecharAdmin();
-  }
-});
-
-// --- MODAL DE LOGIN ADMIN ---
-function abrirAdmin() {
-  document.getElementById('adminOverlay').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function fecharAdmin() {
-  document.getElementById('adminOverlay').classList.remove('open');
-  document.body.style.overflow='';
-}
-function fecharAdminFora(event) {
-  if (event.target.id === 'adminOverlay') fecharAdmin();
+function fecharModalAdmin() {
+  document.getElementById('modalAdmin').classList.add('hidden');
+  document.getElementById('modalAdmin').style.display = 'none';
+  document.getElementById('adminErro').classList.add('hidden');
+  document.getElementById('adminNick').value = '';
+  document.getElementById('adminSenha').value = '';
 }
 
-// ENTRAR COMO ADMIN (E LIDAR COM A SENHA PADRÃO)
-async function entrarComoAdmin(event) {
-  event.preventDefault();
-  if (!supabaseClient) return alert("Erro de conexão. Recarregue a página.");
+async function processarLoginAdmin() {
+  var nick = document.getElementById('adminNick').value.trim();
+  var senha = document.getElementById('adminSenha').value.trim();
+  var erro = document.getElementById('adminErro');
 
-  const nick = document.getElementById('adminNick').value.trim();
-  const senha = document.getElementById('adminSenha').value;
+  if (!nick || !senha) return;
 
-  // Busca o admin pelo Nick e Senha
+  erro.classList.add('hidden');
+
   const { data, error } = await supabaseClient
     .from('admins')
     .select('*')
@@ -544,204 +482,388 @@ async function entrarComoAdmin(event) {
     .single();
 
   if (error || !data) {
-    return alert("Acesso negado: Nickname ou senha de Administrador incorretos.");
-  }
-
-  // VERIFICA SE A SENHA É A PADRÃO 0000
-  if (senha === '0000') {
-    adminTrocandoSenha = nick; // Salva o nick para atualizar depois
-    
-    // Fecha o modal de login admin
-    fecharAdmin();
-    
-    // Abre o modal de troca de senha obrigatória
-    document.getElementById('modalTrocarSenha').classList.add('open');
-    document.body.style.overflow='hidden';
-    
-    return; 
-  }
-
-  // Se a senha não for 0000, loga normalmente
-  localStorage.setItem('idledex_admin_nick', nick);
-  window.location.href = 'admin.html';
-}
-
-// SALVAR A NOVA SENHA (OBRIGATÓRIO)
-async function salvarNovaSenha(event) {
-  event.preventDefault();
-  if (!supabaseClient || !adminTrocandoSenha) return;
-
-  const novaSenha = document.getElementById('novaSenhaAdmin').value;
-  const confirmaSenha = document.getElementById('confirmaNovaSenhaAdmin').value;
-
-  if (novaSenha.length < 4) {
-    return alert("A nova senha precisa ter no mínimo 4 dígitos.");
-  }
-  if (novaSenha !== confirmaSenha) {
-    return alert("As senhas não coincidem. Digite novamente.");
-  }
-  if (novaSenha === '0000') {
-    return alert("Você não pode usar a senha padrão 0000. Escolha outra.");
-  }
-
-  // Atualiza a senha no banco de dados
-  const { error } = await supabaseClient
-    .from('admins')
-    .update({ senha: novaSenha })
-    .eq('nome', adminTrocandoSenha);
-
-  if (error) {
-    return alert("Erro ao atualizar a senha: " + error.message);
-  }
-
-  alert("Senha alterada com sucesso! Você será redirecionado para o painel.");
-  
-  localStorage.setItem('idledex_admin_nick', adminTrocandoSenha);
-  window.location.href = 'admin.html';
-}
-
-// --- LOGIN E CADASTRO NO SUPABASE (CLIENTES) ---
-async function fazerLogin(event) {
-  event.preventDefault();
-  if (!supabaseClient) return alert("Erro de conexão. Recarregue a página.");
-
-  const nick = document.getElementById('loginNick').value.trim();
-  const senha = document.getElementById('loginSenha').value;
-  const feedback = document.querySelector('#painelLogin .auth-feedback');
-  feedback.textContent = 'Verificando...';
-
-  const { data, error } = await supabaseClient.from('clientes').select('*').eq('nick', nick).eq('senha', senha).single();
-
-  if (error || !data) {
-    feedback.textContent = 'Nickname ou senha incorretos.';
+    erro.classList.remove('hidden');
     return;
   }
 
-  localStorage.setItem('idledex_cliente_nick', data.nick);
-  CLIENTE_LOGADO = data.nick;
-  fecharLogin();
-  
-  // REDIRECIONA DIRETO PARA O PAINEL
+  localStorage.setItem('baiano_admin_logado', data.nome);
   window.location.href = 'painel.html';
 }
 
-async function fazerCadastro(event) {
-  event.preventDefault();
-  if (!supabaseClient) return alert("Erro de conexão. Recarregue a página.");
+// ==========================================
+// MODAL DE COMPRA DO CLIENTE
+// ==========================================
+function abrirModalCompra() {
+  if (!carrinho.length) return alert('Carrinho vazio!');
 
-  const nick = document.getElementById('cadJogador').value.trim();
-  const email = document.getElementById('cadEmail').value.trim();
-  const whats = document.getElementById('cadWhats').value.trim();
-  const senha = document.getElementById('cadSenha').value;
-  const confirma = document.getElementById('cadConfirmaSenha').value;
-  const feedback = document.querySelector('#painelCadastro .auth-feedback');
-
-  if (!/^\d{4}$/.test(senha)) { feedback.textContent = 'A senha precisa ter exatamente 4 números.'; return; }
-  if (senha !== confirma) { feedback.textContent = 'Os quatro dígitos não coincidem.'; return; }
+  document.getElementById('modalCompra').classList.remove('hidden');
+  document.getElementById('modalCompra').style.display = 'flex';
+  document.getElementById('nickCliente').focus();
   
-  feedback.textContent = 'Criando conta...';
-
-  const { data: existe } = await supabaseClient.from('clientes').select('nick').eq('nick', nick).single();
-  if (existe) { feedback.textContent = 'Este nickname já está em uso.'; return; }
-
-  const { error } = await supabaseClient.from('clientes').insert([{
-    nick: nick, email: email || 'Não informado', whatsapp: whats || 'Não informado',
-    senha: senha, status: 'pendente', plano: 'Nenhum', data_inicio: new Date().toISOString()
-  }]);
-
-  if (error) { feedback.textContent = 'Erro ao criar conta: ' + error.message; return; }
-
-  localStorage.setItem('idledex_cliente_nick', nick);
-  CLIENTE_LOGADO = nick;
-  fecharLogin();
-  
-  // REDIRECIONA DIRETO PARA O PAINEL
-  window.location.href = 'painel.html';
+  selecionarPagamento('PIX');
 }
 
-// --- CHAT SUPORTE ---
-function alternarChat() { document.getElementById('chatPanel').classList.toggle('aberto'); }
-
-function preencherChatNick() {
-  if (CLIENTE_LOGADO) {
-    document.getElementById('chatNick').value = CLIENTE_LOGADO;
-    document.getElementById('chatNick').readOnly = true;
-    document.getElementById('chatNick').classList.add('bg-gray-200');
-  }
+function fecharModalCompra() {
+  document.getElementById('modalCompra').classList.add('hidden');
+  document.getElementById('modalCompra').style.display = 'none';
+  document.getElementById('nickCliente').value = '';
 }
 
-async function carregarChatCliente() {
-  if (!CLIENTE_LOGADO || !supabaseClient) {
-    document.getElementById('chatMensagens').innerHTML = '<div class="chat-balao suporte">Faça login para conversar.</div>';
+function confirmarCompra() {
+  var nick = document.getElementById('nickCliente').value.trim();
+  if (!nick) return alert("Você precisa digitar o seu nick no jogo para continuar!");
+
+  var linhas = carrinho.map(function(i){ 
+    var textoItem = '• ' + i.nome + ' ×' + i.qtd + ' = R$ ' + (i.preco * i.qtd);
+    if (i.kk) textoItem += ' (' + i.kk + ' Silver)';
+    return textoItem;
+  });
+  
+  var total = carrinho.reduce(function(s,i){ return s + i.qtd * i.preco; }, 0);
+  
+  var texto = 'Olá Baiano! Quero comprar:\n\n' + linhas.join('\n') + '\n\n*Total: R$ ' + total + '*' +
+              '\n*Pagamento:* ' + metodoPagamentoSelecionado +
+              '\n*Meu nick no jogo:* ' + nick;
+  
+  window.open('https://wa.me/5571984373174?text=' + encodeURIComponent(texto), '_blank');
+  fecharModalCompra();
+}
+
+// ==========================================
+// CONFIGURAÇÕES E VARIÁVEIS GLOBAIS
+// ==========================================
+var POKEAPI = 'https://pokeapi.co/api/v2';
+
+var carrinho = [];
+var abaAtual = 'tm';
+var TMS = [];
+var SILVER = [];
+var POKEMON_CUSTOM = [];
+
+var coresTipo = {
+  fire: '#f08030', water: '#6890f0', grass: '#78c850', electric: '#f8d030',
+  psychic: '#f85888', ice: '#98d8d8', dragon: '#7038f8', dark: '#705848',
+  fairy: '#ee99ac', normal: '#a8a878', poison: '#a040a0', ground: '#e0c068',
+  flying: '#a890f0', bug: '#a8b820', rock: '#b8a038', ghost: '#705898',
+  steel: '#b8b8d0', fighting: '#c03028'
+};
+
+// ==========================================
+// BUSCAR PRODUTOS DO SUPABASE
+// ==========================================
+async function buscarProdutos() {
+  const status = document.getElementById('catalogoStatus');
+  status.textContent = "Buscando catálogo...";
+  
+  const { data, error } = await supabaseClient.from('produtos').select('*');
+  
+  if (error) {
+    console.error("Erro ao buscar produtos:", error);
+    status.textContent = "Erro ao carregar catálogo. Tente novamente.";
     return;
   }
 
-  const { data: mensagens, error } = await supabaseClient.from('mensagens').select('*').eq('cliente_nick', CLIENTE_LOGADO).order('created_at', { ascending: true });
+  TMS = []; SILVER = []; POKEMON_CUSTOM = [];
 
-  const container = document.getElementById('chatMensagens');
-  container.innerHTML = '';
+  data.forEach(prod => {
+    if (prod.tipo === 'tm') {
+      TMS.push({ id: prod.id, nome: prod.nome, preco: prod.preco, kk: prod.kk, estoque: prod.estoque, imagem: prod.imagem });
+    } else if (prod.tipo === 'silver') {
+      SILVER.push({ id: prod.id, nome: prod.nome, preco: prod.preco, kk: prod.kk, estoque: prod.estoque });
+    } else if (prod.tipo === 'pokemon') {
+      POKEMON_CUSTOM.push({ id: Number(prod.imagem), nome: prod.nome, preco: prod.preco, kk: prod.kk, estoque: prod.estoque, db_id: prod.id });
+    }
+  });
 
-  if (error || !mensagens || mensagens.length === 0) {
-    container.innerHTML = '<div class="chat-balao suporte">Olá! Como podemos ajudar você hoje?</div>';
+  renderCatalogo();
+}
+
+// ==========================================
+// RENDERIZAR CATÁLOGO
+// ==========================================
+function renderCatalogo() {
+  var grid = document.getElementById('produtoGrid');
+  var status = document.getElementById('catalogoStatus');
+  grid.innerHTML = '';
+  status.textContent = '';
+
+  if (abaAtual === 'tm') {
+    if (TMS.length === 0) {
+      status.innerHTML = '<strong style="color:#d8213a;">Nenhuma TM cadastrada ainda.</strong>';
+    } else {
+      TMS.forEach(function(tm){ grid.appendChild(criarCardTM(tm)); });
+      status.textContent = 'TMs com entrega imediata.';
+    }
+  } else if (abaAtual === 'silver') {
+    if (SILVER.length === 0) {
+      status.innerHTML = '<strong style="color:#d8213a;">Nenhum pacote de Silver cadastrado.</strong>';
+    } else {
+      SILVER.forEach(function(s){ grid.appendChild(criarCardGenerico(s, '💰')); });
+      status.textContent = 'Silver entregue via trade.';
+    }
   } else {
-    mensagens.forEach(m => {
-      const div = document.createElement('div');
-      div.className = `chat-balao ${m.autor === 'cliente' ? 'usuario' : 'suporte'}`;
-      div.innerHTML = m.autor === 'admin' ? `<strong>Suporte:</strong> ${m.texto}` : `${m.texto}`;
-      container.appendChild(div);
-    });
-    container.scrollTop = container.scrollHeight;
+    if (POKEMON_CUSTOM.length === 0) {
+      status.innerHTML = '<strong style="color:#d8213a;">Nenhum Pokémon cadastrado.</strong>';
+    } else {
+      status.textContent = 'Carregando Pokémon da PokéAPI...';
+      POKEMON_CUSTOM.forEach(function(poke) {
+        fetch(POKEAPI + '/pokemon/' + poke.id)
+          .then(function(r){ return r.json(); })
+          .then(function(data){ grid.appendChild(criarCardPokemon(data, poke)); })
+          .catch(function(e){ console.warn('Falha ao carregar Pokémon', poke.id); });
+      });
+    }
   }
 }
 
-async function enviarMensagemChat() {
-  if (!CLIENTE_LOGADO || !supabaseClient) return alert('Faça login primeiro.');
-
-  const nick = CLIENTE_LOGADO;
-  const textoInput = document.getElementById('chatTexto');
-  const texto = textoInput.value.trim();
-  if (!texto) { alert('Digite uma mensagem.'); textoInput.focus(); return; }
-
-  textoInput.value = 'Enviando...'; textoInput.disabled = true;
-
-  const { error } = await supabaseClient.from('mensagens').insert([{ cliente_nick: nick, autor: 'cliente', texto: texto }]);
-
-  textoInput.value = ''; textoInput.disabled = false;
+// ==========================================
+// CRIAR CARDS
+// ==========================================
+function criarCardTM(tm) {
+  var div = document.createElement('div');
+  div.className = 'produto';
   
-  if (error) {
-    alert("Erro: " + error.message);
+  var img = document.createElement('img');
+  img.src = tm.imagem;
+  img.alt = tm.nome;
+  img.loading = 'lazy';
+  img.onerror = function(){ this.onerror = null; this.src = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/tm-normal.png'; };
+  div.appendChild(img);
+
+  var h3 = document.createElement('h3');
+  h3.textContent = tm.nome;
+  div.appendChild(h3);
+
+  var preco = document.createElement('div');
+  preco.className = 'preco';
+  var textoKk = tm.kk ? '<span class="preco-kk">' + tm.kk + ' Silver</span>' : '';
+  preco.innerHTML = 'R$ ' + tm.preco + textoKk;
+  div.appendChild(preco);
+
+  var estoqueTag = document.createElement('div');
+  estoqueTag.style.fontSize = '16px';
+  estoqueTag.style.marginBottom = '4px';
+  if (tm.estoque > 0) {
+    estoqueTag.innerHTML = '<span style="color: #168b68; font-weight: bold;">✓ Em estoque (' + tm.estoque + ' un.)</span>';
   } else {
-    carregarChatCliente();
-    textoInput.focus();
+    estoqueTag.innerHTML = '<span style="color: #d8213a; font-weight: bold;">✗ Esgotado</span>';
   }
+  div.appendChild(estoqueTag);
+
+  var btn = document.createElement('button');
+  btn.className = 'add-btn';
+  
+  if (tm.estoque > 0) {
+    btn.textContent = '+ Carrinho';
+    btn.onclick = function(){ addCarrinho(tm.id, tm.nome, tm.preco, tm.kk); };
+  } else {
+    btn.textContent = 'Esgotado';
+    btn.disabled = true;
+  }
+  
+  div.appendChild(btn);
+  return div;
 }
+
+function criarCardGenerico(prod, icone) {
+  var div = document.createElement('div');
+  div.className = 'produto';
+  
+  var textoKk = prod.kk ? '<span class="preco-kk">' + prod.kk + ' Silver</span>' : '';
+  div.innerHTML = '<div style="font-size:56px;">' + icone + '</div><h3>' + prod.nome + '</h3>' +
+                  '<div class="preco">R$ ' + prod.preco + textoKk + '</div>';
+  
+  var estoqueTag = document.createElement('div');
+  estoqueTag.style.fontSize = '16px';
+  estoqueTag.style.marginBottom = '4px';
+  if (prod.estoque > 0) {
+    estoqueTag.innerHTML = '<span style="color: #168b68; font-weight: bold;">✓ Em estoque (' + prod.estoque + ' un.)</span>';
+  } else {
+    estoqueTag.innerHTML = '<span style="color: #d8213a; font-weight: bold;">✗ Esgotado</span>';
+  }
+  div.appendChild(estoqueTag);
+
+  var btn = document.createElement('button');
+  btn.className = 'add-btn';
+  
+  if (prod.estoque > 0) {
+    btn.textContent = '+ Carrinho';
+    btn.onclick = function(){ addCarrinho(prod.id, prod.nome, prod.preco, prod.kk); };
+  } else {
+    btn.textContent = 'Esgotado';
+    btn.disabled = true;
+  }
+  
+  div.appendChild(btn);
+  return div;
+}
+
+function criarCardPokemon(data, pokeCustom) {
+  var sprite = (data.sprites.versions && data.sprites.versions['generation-v'] && data.sprites.versions['generation-v']['black-white'] && data.sprites.versions['generation-v']['black-white'].animated && data.sprites.versions['generation-v']['black-white'].animated.front_default) || data.sprites.front_default;
+  var nome = pokeCustom.nome || (data.name.charAt(0).toUpperCase() + data.name.slice(1));
+  var preco = pokeCustom.preco;
+  var textoKk = pokeCustom.kk ? '<span class="preco-kk">' + pokeCustom.kk + ' Silver</span>' : '';
+  
+  var tiposHtml = data.types.map(function(t){
+    return '<span class="tipo" style="background:' + (coresTipo[t.type.name] || '#888') + '">' + t.type.name + '</span>';
+  }).join('');
+
+  var div = document.createElement('div');
+  div.className = 'produto';
+  div.innerHTML = '<img src="' + sprite + '" alt="' + nome + '" loading="lazy"><h3>' + nome + '</h3>' +
+                  '<div class="tipos">' + tiposHtml + '</div>' +
+                  '<div class="preco">R$ ' + preco + textoKk + '</div>';
+
+  var estoqueTag = document.createElement('div');
+  estoqueTag.style.fontSize = '16px';
+  estoqueTag.style.marginBottom = '4px';
+  if (pokeCustom.estoque > 0) {
+    estoqueTag.innerHTML = '<span style="color: #168b68; font-weight: bold;">✓ Em estoque (' + pokeCustom.estoque + ' un.)</span>';
+  } else {
+    estoqueTag.innerHTML = '<span style="color: #d8213a; font-weight: bold;">✗ Esgotado</span>';
+  }
+  div.appendChild(estoqueTag);
+
+  var btn = document.createElement('button');
+  btn.className = 'add-btn';
+  
+  if (pokeCustom.estoque > 0) {
+    btn.textContent = '+ Carrinho';
+    btn.onclick = function(){ addCarrinho('poke-' + data.id, nome, preco, pokeCustom.kk); };
+  } else {
+    btn.textContent = 'Esgotado';
+    btn.disabled = true;
+  }
+
+  div.appendChild(btn);
+  return div;
+}
+
+// ==========================================
+// CARRINHO E LÓGICA DE ESTOQUE
+// ==========================================
+function addCarrinho(id, nome, preco, kk) {
+  var itemOriginal = TMS.find(function(i){ return i.id === id; }) || 
+                     SILVER.find(function(i){ return i.id === id; }) || 
+                     POKEMON_CUSTOM.find(function(i){ return 'poke-' + i.id === id; });
+  
+  if (itemOriginal && itemOriginal.estoque <= 0) {
+    alert("Poxa, esse produto esgotou!");
+    return;
+  }
+
+  var itemNoCarrinho = carrinho.find(function(i){ return i.id === id; });
+  
+  if (itemOriginal && itemNoCarrinho && itemNoCarrinho.qtd >= itemOriginal.estoque) {
+    alert("Você já adicionou todo o estoque disponível!");
+    return;
+  }
+
+  if (itemNoCarrinho) itemNoCarrinho.qtd++;
+  else carrinho.push({ id: id, nome: nome, preco: preco, qtd: 1, kk: kk });
+  
+  atualizarCarrinho();
+  addMsg('bot', '✅ <strong>' + nome + '</strong> adicionado ao carrinho!');
+}
+
+function atualizarCarrinho() {
+  var count = carrinho.reduce(function(s,i){ return s + i.qtd; }, 0);
+  var total = carrinho.reduce(function(s,i){ return s + i.qtd * i.preco; }, 0);
+  document.getElementById('cartCount').textContent = count;
+  document.getElementById('cartTotal').textContent = total;
+  document.getElementById('cartTotal2').textContent = total;
+  
+  var box = document.getElementById('cartItens');
+  if (!carrinho.length) {
+    box.innerHTML = '<p style="text-align:center; color:#5b6958;">Carrinho vazio</p>';
+    return;
+  }
+  var html = '';
+  carrinho.forEach(function(i){
+    html += '<div class="cart-item"><span>' + i.nome + ' ×' + i.qtd + '</span><span>R$ ' + (i.preco * i.qtd) + ' <button onclick="removerItem(\'' + i.id + '\')">×</button></span></div>';
+  });
+  box.innerHTML = html;
+}
+
+function removerItem(id) { carrinho = carrinho.filter(function(i){ return i.id !== id; }); atualizarCarrinho(); }
+function limparCarrinho() { carrinho = []; atualizarCarrinho(); }
+function toggleCart() { document.getElementById('cartPanel').classList.toggle('open'); }
+
+// ==========================================
+// CHAT DE VENDAS
+// ==========================================
+var salesMessages = document.getElementById('salesMessages');
+var salesOptions = document.getElementById('salesOptions');
+
+function addMsg(tipo, html) {
+  var div = document.createElement('div');
+  div.className = 'msg ' + tipo;
+  div.innerHTML = html;
+  salesMessages.appendChild(div);
+  salesMessages.scrollTop = salesMessages.scrollHeight;
+}
+
+function setOptions(opts) {
+  salesOptions.innerHTML = '';
+  opts.forEach(function(o){
+    var b = document.createElement('button');
+    b.className = 'opt-btn' + (o.alt ? ' alt' : '');
+    b.textContent = o.texto;
+    b.onclick = o.acao;
+    salesOptions.appendChild(b);
+  });
+}
+
+function scrollCatalogo() { document.getElementById('catalogo').scrollIntoView({behavior:'smooth'}); }
+
+function iniciarChat() {
+  addMsg('bot', 'E aí, jogador! 👋 Sou o <strong>Baiano</strong>, da Baiano Store.<br>O que você procura hoje?');
+  setOptions([
+    { texto: '⚡ Quero TMs', acao: function(){
+        addMsg('user', '⚡ Quero TMs');
+        addMsg('bot', 'TM boa demais! Vai no catálogo → aba <strong>TMs</strong>. Confira o estoque disponível!');
+        setOptions([{ texto: '🛒 Abrir catálogo', acao: scrollCatalogo }]);
+    }},
+    { texto: '💰 Quero Silver', acao: function(){
+        addMsg('user', '💰 Quero Silver');
+        addMsg('bot', 'Silver fresquinho! Confira os pacotes e o estoque na aba Silver do catálogo.');
+        setOptions([{ texto: '🛒 Abrir catálogo', acao: scrollCatalogo }]);
+    }},
+    { texto: '🎮 Quero Pokémon', acao: pokemonInfo },
+    { texto: '📦 Como funciona?', acao: function(){
+        addMsg('user', '📦 Como funciona?');
+        addMsg('bot', 'Simples: 1) Escolhe no catálogo, 2) Adiciona ao carrinho, 3) Clica em "Finalizar no WhatsApp". Eu te respondo com PIX e entrego no jogo ✅');
+        setOptions([{ texto: '🛒 Abrir catálogo', acao: scrollCatalogo }]);
+    }}
+  ]);
+}
+
+function pokemonInfo() {
+  addMsg('user', '🎮 Quero Pokémon');
+  addMsg('bot', 'Tenho uns monstrinhos top! 🐉 Confira o estoque na aba Pokémon do catálogo.');
+  setOptions([
+    { texto: '🛒 Ver no catálogo', acao: scrollCatalogo },
+    { texto: '📱 Chamar no WhatsApp', acao: abrirModalCompra }
+  ]);
+}
+
+function trocarAba(aba) {
+  abaAtual = aba;
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.tab === aba); });
+  renderCatalogo();
+}
+
+// ==========================================
+// INICIALIZAÇÃO
+// ==========================================
+document.addEventListener('DOMContentLoaded', function(){
+  registrarVisita();
+  iniciarChat();
+  buscarProdutos();
+
+  setInterval(carregarEstatisticas, 5000);
+});
 </script>
-
-<style>
-/* ESTILOS DO CHAT SUPORTE AO VIVO */
-.chat-toggle { position: fixed; bottom: 20px; right: 20px; z-index: 1100; width: 60px; height: 60px; border-radius: 50%; border: 4px solid #671324; background-color: #d8213a; color: #fff0c2; font-size: 28px; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 4px 4px 0 #81152a; transition: background-color 0.15s, transform 0.1s; font-family: 'VT323', monospace; }
-.chat-toggle:hover { background-color: #b91c34; }
-.chat-toggle:active { transform: translate(2px, 2px); box-shadow: none; }
-
-.chat-panel { position: fixed; bottom: 90px; right: 20px; z-index: 1100; width: 340px; max-width: calc(100vw - 40px); background-color: #edf2d8; border: 4px solid #304438; box-shadow: 6px 6px 0 #83917b; display: none; flex-direction: column; font-family: 'VT323', monospace; color: #26392f; }
-.chat-panel.aberto { display: flex; }
-.chat-header { background-color: #d8213a; color: #fff0c2; padding: 10px 12px; font-size: 22px; font-weight: bold; display: flex; align-items: center; justify-content: space-between; border-bottom: 4px solid #ffd35a; }
-.chat-fechar { background: transparent; border: none; color: #fff0c2; font-size: 26px; line-height: 1; cursor: pointer; padding: 0 4px; font-family: 'VT323', monospace; }
-.chat-fechar:hover { color: #ffd35a; }
-.chat-mensagens { flex: 1; overflow-y: auto; max-height: 240px; min-height: 120px; padding: 10px; background-color: #f7f8e9; display: flex; flex-direction: column; gap: 8px; }
-.chat-balao { padding: 8px 10px; border: 2px solid #304438; font-size: 18px; line-height: 1.4; max-width: 90%; word-wrap: break-word; }
-.chat-balao.suporte { background-color: #d3dfb9; border-color: #687b61; align-self: flex-start; }
-.chat-balao.usuario { background-color: #fff0c2; border-color: #bd1c35; align-self: flex-end; text-align: right; }
-.chat-balao strong { font-weight: bold; }
-.chat-form { padding: 10px; border-top: 3px solid #83917b; background-color: #e5edcf; display: flex; flex-direction: column; gap: 6px; }
-.chat-campo { display: flex; flex-direction: column; gap: 2px; }
-.chat-campo label { font-size: 17px; font-weight: bold; color: #26392f; }
-.chat-campo input { border: 2px solid #687b61; background-color: #f7f8e9; padding: 6px 8px; font-family: 'VT323', monospace; font-size: 18px; color: #1c2c23; outline: none; }
-.chat-campo input:focus { border-color: #bd1c35; box-shadow: 0 0 0 2px rgba(216, 33, 58, 0.25); }
-.chat-enviar { margin-top: 4px; border: 3px solid #671324; background-color: #d8213a; color: white; font-family: 'VT323', monospace; font-size: 20px; font-weight: bold; padding: 8px 12px; cursor: pointer; box-shadow: 3px 3px 0 #81152a; transition: background-color 0.15s, transform 0.1s; }
-.chat-enviar:hover { background-color: #b91c34; }
-.chat-enviar:active { transform: translate(1px, 1px); box-shadow: none; }
-</style>
 
 </body>
 </html>
